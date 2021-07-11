@@ -20,8 +20,14 @@
                 <a class="navbar-item" href="/sandwiches/1/">Sandwich Detail</a>
                 <a class="navbar-item" href="/users/1/">User Profile</a></li>
                 <a class="navbar-item" href="/users/1/sandwiches/">User Sandwiches</a>
-                <a class="navbar-item" href="{% url 'signup' %}">User Registration</a>
-                <a class="navbar-item" href="{% url 'login' %}">User Login</a>
+                
+                {% if user.is_authenticated %}
+                <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="navbar-item" href="{% url 'login' %}">Login</a>
+                    <a class="navbar-item" href="{% url 'signup' %}">Signup</a>
+                {% endif %}
+                
             </nav>
         </header>
         <main>

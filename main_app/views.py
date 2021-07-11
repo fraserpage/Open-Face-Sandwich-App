@@ -97,10 +97,7 @@ def user_photo_detail(request, user_id, top_id, middle_id, bottom_id):
         raise PermissionDenied 
 
 
-## LOGIN & REGISTRATION ##
-def login(request):
-    return render(request, 'user/login.html')
-
+### USER SIGNUP ###
 def signup(request):
     error_message = ''
     if request.method == 'POST':
