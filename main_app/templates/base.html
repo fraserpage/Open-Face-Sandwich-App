@@ -1,24 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandwich</title>
+    <title>{% block page_title %}Page Title{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/open_face.css' %}">
 </head>
 <body>
-    <nav>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'logout' %}">Log Out</a></li>
-        {% else %}
-        <li><a href="{% url 'login' %}">Log In</a></li>
-        {% endif %}
-    </nav>
-    <main class="container">
-        {% block content %}
-        {% endblock %}
-    </main>
+    <div id="pageContainer">
+        <header id="siteHeader">
+            <button type="button" id="mobileMenuBtn" aria-label="menu">&#9776;</button>
+            <div id="appLogo"><h1>LOGO</h1></div>
+            <nav id="mainMenu" class="navbar">
+                <!-- Possible Desktop or Desktop/Mobile Nav -->
+                <a class="navbar-item" href="/">Home</a>
+                <a class="navbar-item" href="/sandwiches/">Sandwiches</a>
+                <a class="navbar-item" href="/sandwiches/1/">Sandwich Detail</a>
+                <a class="navbar-item" href="/users/1/">User Profile</a></li>
+                <a class="navbar-item" href="/users/1/sandwiches/">User Sandwiches</a>
+                <a class="navbar-item" href="{% url 'signup' %}">User Registration</a>
+                <a class="navbar-item" href="{% url 'login' %}">User Login</a>
+            </nav>
+        </header>
+        <main>
+        {% block content %}<h2>Content will go here</h2>{% endblock %}
+        </main>
+        <footer id="siteFooter">
+            <nav id="footerMainMenu">
+                <!-- Possible Mobile Nav Here -->
+            </nav>
+        </footer>
+    </div>
+    <script src="{% static 'js/page.js' %}"></script>
 </body>
 </html>
-
-
