@@ -16,8 +16,8 @@ class Sandwich(models.Model):
     top = models.ForeignKey(Slice, on_delete=models.CASCADE)
     middle = models.ForeignKey(Slice, on_delete=models.CASCADE)
     bottom = models.ForeignKey(Slice, on_delete=models.CASCADE)
-    creation_date = models.CharField(max_length=50)
-    recent_update = models.CharField(max_length=50)
+    creation_date = models.DateField()
+    recent_update = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # included this in case you wanted to view the sandwich
