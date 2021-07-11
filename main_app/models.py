@@ -13,9 +13,9 @@ class Slice(models.Model):
 
 
 class Sandwich(models.Model):
-    top = models.ForeignKey(Slice, on_delete=models.CASCADE)
-    middle = models.ForeignKey(Slice, on_delete=models.CASCADE)
-    bottom = models.ForeignKey(Slice, on_delete=models.CASCADE)
+    top = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='top_slice_id')
+    middle = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='middle_slice_id')
+    bottom = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='bottom_slice_id')
     creation_date = models.DateField()
     recent_update = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
