@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 
-class Slice(models.Model):
+class Slices(models.Model):
     top = models.CharField(max_length=255)
     middle = models.CharField(max_length=255)
     bottom = models.CharField(max_length=255)
@@ -13,9 +13,9 @@ class Slice(models.Model):
 
 
 class Sandwich(models.Model):
-    top = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='top_slice_id')
-    middle = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='middle_slice_id')
-    bottom = models.ForeignKey(Slice, on_delete=models.CASCADE, related_name='bottom_slice_id')
+    top = models.ForeignKey(Slices, on_delete=models.CASCADE, related_name='top_slice_id')
+    middle = models.ForeignKey(Slices, on_delete=models.CASCADE, related_name='middle_slice_id')
+    bottom = models.ForeignKey(Slices, on_delete=models.CASCADE, related_name='bottom_slice_id')
     creation_date = models.DateField()
     recent_update = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
