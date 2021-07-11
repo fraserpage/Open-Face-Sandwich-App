@@ -76,8 +76,8 @@ WSGI_APPLICATION = 'open_face_sandwich.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'sandwiches',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'open_face',
     }
 }
 
