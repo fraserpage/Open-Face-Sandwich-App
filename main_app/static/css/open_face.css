@@ -1,0 +1,77 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+:root {
+    --main-text-color: rgb(46, 46, 46);
+    --color1: rgb(255, 248, 224);
+    --color1-transparent: rgba(255, 248, 224, 0.9);
+    --color2: rgb(21, 21, 92);
+    --color2-transparent: rgba(21, 21, 92, 0.85);
+    --color3: rgb(250, 255, 255);
+    --color3-transparent: rgba(250, 255, 255, 0.85);
+    --link-hover-color: rgb(220, 207, 163);
+    --button-hover-color: rgb(249, 242, 219);
+    --body-bg: #fff url('');
+    --content-bg: url(''); 
+    --content-border: 5px rgb(227, 214, 183) groove;
+}
+
+body {
+    background: var(--body-bg);
+}
+
+#pageContainer {
+    padding: 20px;
+}
+
+#mobileMenuBtn {
+    float: right;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+#mobileMenuBtn:hover {
+    background-color: var(--color1);
+}
+
+#mainMenu {
+    height: 0;
+    opacity: 0;
+    transition: height 1s, opacity 1s ease-in-out;
+    overflow: hidden;
+  }
+  
+#mainMenu.showMenu {
+height: 300px;
+opacity: 1;
+}
+
+a.navbar-item {
+    display: block;
+}
+
+@media screen and (min-width: 1024px) {
+    #mobileMenuBtn {
+        display: none;
+    }
+
+    #mainMenu {
+        height: auto;
+        opacity: 1;
+    }
+
+    a.navbar-item {
+        display: inline;
+        margin-right: 10px;
+    }
+}
