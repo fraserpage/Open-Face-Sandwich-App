@@ -3,7 +3,32 @@
 {% block page_title %}Create a New Sandwich{% endblock %}
 
 {% block content %}
-<h2 class="pageSubtitle">Create a New Sandwich</h2>
-  
- 
+<h2 id="subtitle" class="pageSubtitle">Create a New Sandwich</h2>
+
+<p hidden="true" id='top-list'> {{ top_string }}</p>
+<p hidden="true" id='middle-list'>{{ middle_string }}</p>
+<p hidden="true" id='bottom-list'>{{ bottom_string }}</p>
+
+
+    <button id="top-backward-arrow"> &larr; </button>
+    <img id="top-array-output" src="">
+    <button id="top-forward-arrow"> &rarr; </button>
+
+    <button id="middle-backward-arrow"> &larr; </button>
+    <img id="middle-array-output" src="">
+    <button id="middle-forward-arrow"> &rarr; </button>
+
+    <button id="bottom-backward-arrow"> &larr; </button>
+    <img id="bottom-array-output" src="">
+    <button id="bottom-forward-arrow"> &rarr; </button>
+
+
+    <form id="form" action="#" method="POST">
+        {% csrf_token %}
+        <button type="submit">Amazing Sandwich - Save it!</button>
+    </form>
+
+    <script src="{% static 'js/toggle.js' %}"></script>
+
+
 {% endblock %}
