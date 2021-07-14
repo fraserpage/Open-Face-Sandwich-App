@@ -9,16 +9,19 @@ from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from datetime import date
 from .models import *
-<<<<<<< HEAD
 import uuid
 import boto3
 import datetime
 from PIL import Image
 import io
+# import cv2
+import numpy as np
+import random
 
 # Amazon S3 settings
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
 BUCKET = 'open-face-sandwich'
+
 # photo crop lines
 crop__mid = 0.4 # top of mid block
 crop_low = 0.68 # bottom of mid block
@@ -70,19 +73,13 @@ def crop_image(image, crop):
 
     return in_mem_file
 
-
-
 def photo_detail(request, id):
     photo = Photo.objects.get(id=id)
     return render(request, 'photo/detail.html', {'photo':photo})
-=======
+
+
 # added lines below for sandwich_new controller to help stack
 # slices
-import cv2
-import numpy as np
-import random
-
->>>>>>> bba6b2db1cf69dceb3edbc5f88df473a3beaa59b
 
 def index(request):
     return render(request, 'index.html')
