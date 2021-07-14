@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block page_title %}User Profile: {% endblock %}
+{% block page_title %}User Profile: {{ profile_user.username }}{% endblock %}
 
 {% block content %}
-<h2 class="pageSubtitle">User Profile: </h2>
-  
+<h2 class="page-headline">User Profile: {{ profile_user.username }}</h2>
+{% if user.is_authenticated and user.id == profile_user.id %}
+    <a href="{% url 'user_profile_edit' profile_user.id %}">Edit Profile</a><br>
+    <a href="{% url 'user_photo_gallery' profile_user.id %}">Photo Gallery</a><br>
+{% endif %}
+{% if profile_user.img_src %}
+    <img id="user-img" src="{{ profile_user.img_src }}" alt="user img goes here">  
+{% endif %}
+<div id="user-bio">{{ profile_user.bio|linebreaks }}</div>
+<a href="{% url 'user_sandwich_gallery' profile_user.id %}">Sandwich Gallery!</a>
  
 {% endblock %}

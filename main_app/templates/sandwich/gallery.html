@@ -1,9 +1,24 @@
 {% extends '../base.html' %}
 {% load static %}
-{% block page_title %}Sandwich Gallery{% endblock %}
+
+{% block page_title %}{% endblock %} 
 
 {% block content %}
-<h2 class="pageSubtitle">Sandwich Gallery</h2>
-  
+<h1 class="page-headline">{{gallery_title}}</h1>
+    {% if gallery_type == 'user' %}
+        <div id="user-mini-profile">User Mini profile goes here</div>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <a class="underlined" href="{% url 'sandwich_new' %}">Make a new sandwich!</a>
+    {% endif %}
+    <div id="sandwich-gallery-grid">
+            {% for sandwich in sandwiches %}
+                <a href="/sandwiches/{{ sandwich.id }}">   
+                    <img class="sandwich-top" src="{{ sandwich.top.top }}">
+                    <img class="sandwich-middle" src="{{ sandwich.middle.middle }}">
+                    <img class="sandwich-bottom" src="{{ sandwich.bottom.bottom }}">
+                    Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
+            {% endfor %}
+    </div>
  
 {% endblock %}
