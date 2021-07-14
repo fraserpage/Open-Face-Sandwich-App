@@ -67,13 +67,6 @@ function submitForm(blob) {
     .catch((error) => console.log(error));
 }
 
-
+// ---- To do: handle resize window
 // window.addEventListener('resize',scaleCroppie)
-
 // on resize display a button to reload croppie if (main.clientWidth < croppie.clientWidth)
-
-
-
-// if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-//   console.log("Let's get this party started")
-// }
