@@ -1,0 +1,57 @@
+img{
+  width: 100%;
+}
+.hidden{
+  display: none;
+}
+.cr-viewport{
+  border: 3px solid black !important;
+}
+#image-cropper {
+  position: relative;
+}
+#croplines{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 40px;
+}
+#croplines * {
+  pointer-events: none;
+}
+#oval {
+  position: absolute;
+  z-index: 1;
+  transform: translateX(-50%);
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 335px;
+  max-width: 70vw;
+  border: 9px dotted #00fffa;
+  border-radius: 50%;
+}
+#center-line {
+  position: absolute;
+  left: 50%;
+  border-left: 9px dotted #00fffa;
+  top: 30px;
+  bottom: 30px;
+  z-index: 1;
+}
+#mid-line, 
+#low-line {
+  position: absolute;  
+  transform: translateX(-50%);
+  left: 50%;
+  width: 500px;
+  max-width: 70vw;
+  border-top: 9px solid white;
+  z-index: 1;
+}
+
+
+
+
+

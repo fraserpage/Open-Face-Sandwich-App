@@ -1,0 +1,50 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block add_to_head %}
+<link rel="stylesheet" href="{% static 'css/croppie.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/photo_cropper.css' %}">
+
+{% endblock add_to_head %}
+
+
+{% block page_title %}Create a New Sandwich{% endblock %}
+
+{% block content %}
+{{message}}
+<h2 class="pageSubtitle">Create a New Sandwich</h2>
+
+<label for="croppieInput">Upload Image</label>
+<input type="file" accept="image/*" name="image" id="croppieInput" >
+
+
+<div id="image-cropper">
+	<div id="croppie-container"></div>
+	<div id="croplines" class="hidden">
+		<div id="oval"></div>
+		<div id="center-line"></div>
+		<div id="mid-line" style="top:{{crop_mid}}%"></div>
+		<div id="low-line" style="top:{{crop_low}}%"></div>
+	</div>
+</div>
+<div id="croppie-actions" class="hidden">
+	<button class="croppie-rotate" data-deg="-90">Rotate Left</button>
+	<button class="croppie-rotate" data-deg="90">Rotate Right</button>
+	<div>
+		<button class="croppie-go">Looks good! Let's make face sandwiches!</button>
+	</div>	
+</div>
+
+
+<form id="upload-form" action="{% url 'photo_save' %}" enctype="multipart/form-data" method="post">
+	{% csrf_token %}
+</form>
+
+<img id="result">
+ 
+{% endblock %}
+
+{% block add_to_footer %}
+	<script src="{% static 'js/exif.js' %}"></script>	
+	<script src="{% static 'js/croppie.js' %}"></script>	
+	<script src="{% static 'js/photo_cropper.js' %}"></script>
+{% endblock %}

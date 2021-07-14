@@ -1,3 +1,4 @@
+# import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -7,6 +8,80 @@ from .models import *
 # added lines below for sandwich_new controller to help stack
 # slices
 import random
+
+# Amazon S3 settings
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'open-face-sandwich'
+
+# photo crop lines
+crop__mid = 0.4  # top of mid block
+crop_low = 0.68  # bottom of mid block
+
+
+@login_required
+def photo_new(request):
+    return render(request, 'photo/new.html', {'crop_mid': crop__mid*100, 'crop_low': crop_low*100})
+
+
+@login_required
+def photo_save(request):
+    image_file = request.FILES.get('image', None)
+    if image_file:
+        pil_image = Image.open(image_file)
+        width = pil_image.width
+        height = pil_image.height
+
+        top_img = crop_image(pil_image, (0, 0, width, height * crop__mid))
+        top_url = save_to_s3(top_img, image_file)
+
+        middle_img = crop_image(
+            pil_image, (0, height * crop__mid, width, height * crop_low))
+        middle_url = save_to_s3(middle_img, image_file)
+
+        bottom_img = crop_image(
+            pil_image, (0, height * crop_low, width, height))
+        bottom_url = save_to_s3(bottom_img, image_file)
+
+        photo = Photo(
+            top=top_url,
+            middle=middle_url,
+            bottom=bottom_url,
+            is_public=True,
+            user=request.user)
+        photo.save()
+        return JsonResponse({'url': reverse('sandwich_from_photo', kwargs={'photo_id': photo.id})})
+    else:
+        # Something went wrong
+        return JsonResponse({
+            'url': reverse('photo_new'),
+            'error': 'There was an error saving the photo'
+        })
+
+# photo saving helper functions
+
+
+def save_to_s3(image_file, orig_img):
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + orig_img.name[orig_img.name.rfind('.'):]
+    s3.upload_fileobj(image_file, BUCKET, key)
+    return f"{S3_BASE_URL}{BUCKET}/{key}"
+
+
+def crop_image(image, crop):
+    cropped_img = image.crop(crop)
+    if cropped_img.mode != 'RGB':
+        cropped_img = cropped_img.convert('RGB')
+
+    in_mem_file = io.BytesIO()
+    cropped_img.save(in_mem_file, format="JPEG")
+    in_mem_file.seek(0)
+
+    return in_mem_file
+
+
+def photo_detail(request, id):
+    photo = Photo.objects.get(id=id)
+    return render(request, 'photo/detail.html', {'photo': photo})
 
 
 def index(request):
@@ -34,23 +109,15 @@ def random_slices():
     top = list(Photo.objects.values_list('top', flat=True))
     middle = list(Photo.objects.values_list('middle', flat=True))
     bottom = list(Photo.objects.values_list('bottom', flat=True))
-
-    print("top_id is", id)
-    print("top is", top)
     tops, middles, bottoms = [], [], []
     for i in range(len(top)):
         tops.append(f'{top[i]}_{str(id[i])}')
         middles.append(f'{middle[i]}_{str(id[i])}')
         bottoms.append(f'{bottom[i]}_{str(id[i])}')
-    print("tops is", tops)
-
     # randomizes the top, middle and bottom lists
     tops = random.sample(tops, len(tops))
     middles = random.sample(middles, len(middles))
     bottoms = random.sample(bottoms, len(bottoms))
-    print("top is", tops)
-    print("middle is", middles)
-    print("bottom is", bottoms)
     # joins them into a string to be used by javascript
     top_string = ','.join(tops)
     middle_string = ','.join(middles)
@@ -63,7 +130,27 @@ def random_slices():
 
 def sandwich_new(request):
     (top_string, middle_string, bottom_string) = random_slices()
-    return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string})
+    return render(request, 'sandwich/workshop.html', {
+        'top_string': top_string,
+        'middle_string': middle_string,
+        'bottom_string': bottom_string
+    })
+
+
+def sandwich_from_photo(request, photo_id):
+    (top_string, middle_string, bottom_string) = random_slices()
+    photo = Photo.objects.get(id=photo_id)
+    return render(request, 'sandwich/workshop.html', {
+        'top_string': top_string,
+        'middle_string': middle_string,
+        'bottom_string': bottom_string,
+        'top': photo.top,
+        'middle': photo.middle,
+        'bottom': photo.bottom,
+        'top_id': photo.id,
+        'middle_id': photo.id,
+        'bottom_id': photo.id
+    })
 
 
 def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
@@ -72,7 +159,19 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         sandwich_top = Photo.objects.get(id=top_id).top
         sandwich_middle = Photo.objects.get(id=middle_id).middle
         sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
-        return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string, 'top': sandwich_top, 'middle': sandwich_middle, 'bottom': sandwich_bottom, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'next': next})
+
+        return render(request, 'sandwich/workshop.html', {
+            'top_string': top_string,
+            'middle_string': middle_string,
+            'bottom_string': bottom_string,
+            'top': sandwich_top,
+            'middle': sandwich_middle,
+            'bottom': sandwich_bottom,
+            'sandwich_id': sandwich_id,
+            'top_id': top_id,
+            'middle_id': middle_id,
+            'bottom_id': bottom_id
+        })
     else:
         raise PermissionDenied
 
@@ -103,7 +202,14 @@ def sandwich_detail(request, sandwich_id):
         middle_id = sandwich.middle_id
         bottom_id = sandwich.bottom_id
         user_id = sandwich.user_id
-        return render(request, 'sandwich/detail.html', {'sandwich': sandwich, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'user_id': user_id})
+        return render(request, 'sandwich/detail.html', {
+            'sandwich': sandwich,
+            'sandwich_id': sandwich_id,
+            'top_id': top_id,
+            'middle_id': middle_id,
+            'bottom_id': bottom_id,
+            'user_id': user_id
+        })
     else:
         return redirect('/sandwiches/')
 
@@ -128,7 +234,11 @@ def user_profile(request, user_id):
         pass
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    return render(request, 'user/profile.html', {'profile_user': profile_user, 'photos': photos, 'sandwiches': sandwiches})
+    return render(request, 'user/profile.html', {
+        'profile_user': profile_user,
+        'photos': photos,
+        'sandwiches': sandwiches,
+    })
 
 
 @login_required
@@ -176,7 +286,11 @@ def user_sandwich_gallery(request, user_id):
     profile_user = User.objects.get(id=user_id)
     gallery_title = profile_user.username + '\'s Sandwich Gallery'
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    return render(request, 'sandwich/gallery.html', {'gallery_title': gallery_title, 'gallery_type': 'user', 'sandwiches': sandwiches})
+    return render(request, 'sandwich/gallery.html', {
+        'gallery_title': gallery_title,
+        'gallery_type': 'user',
+        'sandwiches': sandwiches
+    })
 
 
 @login_required
