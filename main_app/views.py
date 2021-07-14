@@ -2,15 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.db import models
-from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from datetime import date
 from .models import *
 # added lines below for sandwich_new controller to help stack
 # slices
-import cv2
-import numpy as np
 import random
 
 
@@ -77,7 +72,7 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         sandwich_top = Photo.objects.get(id=top_id).top
         sandwich_middle = Photo.objects.get(id=middle_id).middle
         sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
-        return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string, 'top': sandwich_top, 'middle': sandwich_middle, 'bottom': sandwich_bottom, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id})
+        return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string, 'top': sandwich_top, 'middle': sandwich_middle, 'bottom': sandwich_bottom, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'next': next})
     else:
         raise PermissionDenied
 
@@ -91,7 +86,7 @@ def sandwich_create(request, top_id, middle_id, bottom_id):
         user=request.user,
     )
     sandwich.save()
-    return redirect('/sandwiches/')
+    return redirect(f'/sandwiches/{sandwich.id}')
 
 
 def sandwich_delete(request, sandwich_id):
@@ -107,7 +102,6 @@ def sandwich_detail(request, sandwich_id):
         top_id = sandwich.top_id
         middle_id = sandwich.middle_id
         bottom_id = sandwich.bottom_id
-        print("sandwich in detail is", sandwich.id)
         user_id = sandwich.user_id
         return render(request, 'sandwich/detail.html', {'sandwich': sandwich, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'user_id': user_id})
     else:
@@ -126,7 +120,6 @@ def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
 
 def user_profile(request, user_id):
     profile_user = User.objects.get(id=user_id)
-    print("profile_user.id is", profile_user.id)
     try:
         profile_data = Profile.objects.get(user_id=profile_user.id)
         profile_user.bio = profile_data.bio
@@ -135,8 +128,7 @@ def user_profile(request, user_id):
         pass
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    user = User.objects.get(id=user_id)
-    return render(request, 'user/profile.html', {'profile_user': profile_user, 'photos': photos, 'sandwiches': sandwiches, 'user': user})
+    return render(request, 'user/profile.html', {'profile_user': profile_user, 'photos': photos, 'sandwiches': sandwiches})
 
 
 @login_required
@@ -221,7 +213,10 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')
+            if "next" in request.POST:
+                return redirect(request.POST['next'])
+            else:
+                return redirect('index')
         else:
             error_message = 'Invalid sign up - try again'
 

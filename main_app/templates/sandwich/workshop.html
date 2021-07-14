@@ -25,14 +25,26 @@
     <img id="bottom-array-output" src="">
     <button id="bottom-forward-arrow"> &rarr; </button>
 
-{% if user.is_authenticated %}
+    <form id="form" action="#" method="POST">
+        {% csrf_token %}
+        <button type="submit">Amazing Sandwich - Save it!</button>
+    </form>
+
+<!-- {% if user.is_authenticated %}
     <form id="form" action="#" method="POST">
         {% csrf_token %}
         <button type="submit">Amazing Sandwich - Save it!</button>
     </form>
 {% else %}
-    
-{% endif %}
+    <form id="form" action="/accounts/login/" method="POST">
+        {% csrf_token %}
+        <button type="submit">Already a user? - Login to Save it!</button>
+    </form>
+    <form id="form" action="/accounts/signup/" method="POST">
+        {% csrf_token %}
+        <button type="submit">New user? - Signup to Save it!</button>
+    </form>
+{% endif %} -->
     <script src="{% static 'js/toggle.js' %}"></script>
 
 
