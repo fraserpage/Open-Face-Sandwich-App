@@ -1,77 +1,288 @@
+/*************** CSS VARIABLES ***************/
+:root {
+  --main-text-color: #000;
+  --link-color: rgb(60, 55, 60);
+  --link-hover-color: rgb(152, 143, 155);
+  --button-bg-color: rgb(230, 230, 230);
+  --button-hover-color: rgb(249, 242, 219);
+  --header-footer-bg: rgb(171, 171, 171);
+  --body-bg: #fff url("");
+  --content-bg: url("");
+}
+
+/*************** MOBILE-CENTRIC STYLES ***************/
+
+/*************** MAIN PAGE ELEMENTS ***************/
+
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
 
 html {
-    font-size: 16px;
-}
-
-:root {
-    --main-text-color: rgb(46, 46, 46);
-    --color1: rgb(255, 248, 224);
-    --color1-transparent: rgba(255, 248, 224, 0.9);
-    --color2: rgb(21, 21, 92);
-    --color2-transparent: rgba(21, 21, 92, 0.85);
-    --color3: rgb(250, 255, 255);
-    --color3-transparent: rgba(250, 255, 255, 0.85);
-    --link-hover-color: rgb(220, 207, 163);
-    --button-hover-color: rgb(249, 242, 219);
-    --body-bg: #fff url('');
-    --content-bg: url(''); 
-    --content-border: 5px rgb(227, 214, 183) groove;
+  font-size: 16px;
 }
 
 body {
-    background: var(--body-bg);
+  background: var(--body-bg);
+  color: var(--main-text-color);
+  font-size: 1rem;
+  height: auto;
+  font-family: "Roboto", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
 }
 
-#pageContainer {
-    padding: 20px;
+div#page-container {
+  display: flex;
+  height: 100vh;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-#mobileMenuBtn {
-    float: right;
-    display: block;
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    font-weight: bold;
+header#site-header,
+footer#site-footer {
+  background: var(--header-footer-bg);
+  width: 100%;
+  height: auto;
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
 }
 
-#mobileMenuBtn:hover {
-    background-color: var(--color1);
+header#site-header,
+footer#site-footer,
+main {
+  flex-shrink: 0;
 }
 
-#mainMenu {
-    height: 0;
-    opacity: 0;
-    transition: height 1s, opacity 1s ease-in-out;
-    overflow: hidden;
+header#site-header {
+  border-radius: 30px 30px 0 0;
+  min-height: 50px;
+  top: 0;
+}
+
+footer#site-footer {
+  border-radius: 0 0 30px 30px;
+  min-height: 75px;
+  bottom: 0;
+}
+
+main {
+  margin-bottom: 20px;
+  width: 98%;
+  margin: 0 auto;
+  padding: 50px 20px 80px 20px;
+  flex-grow: 1;
+}
+
+div#desktop-footer-content {
+  display: none;
+}
+
+/*************** MAIN TEXT ELEMENTS ***************/
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 20px 0;
+  font-weight: normal;
+}
+
+h1.page-headline {
+  width: 100%;
+  text-align: center;
+}
+
+div,
+p {
+  font-size: 1rem;
+}
+
+button {
+  padding: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: var(--button-bg-color);
+  margin-bottom: 20px;
+}
+
+button:hover {
+  cursor: pointer;
+  padding: 5px;
+  font-weight: bold;
+  background-color: var(--button-hover-color);
+}
+
+/*************** FORM ELEMENTS ***************/
+form {
+  margin: 0 auto;
+  width: 95%;
+  text-align: center;
+  padding: 20px;
+}
+
+label,
+input,
+textarea {
+  font-size: 1.1rem;
+  display: block;
+  font-family: "Roboto", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
+}
+
+input,
+textarea {
+  margin: 10px 0 20px 0;
+}
+
+button.form-submit,
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-family: "Roboto", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
+}
+
+textarea {
+  height: 200px;
+}
+
+form#user-signup-form .helptext,
+form#user-signup-form ul {
+  font-size: 0.8rem;
+  display: none;
+}
+
+form#user-signup-form ul {
+  list-style: none;
+}
+
+/*************** UTILITY CLASSES ***************/
+.underlined {
+  text-decoration: underline;
+}
+
+/*************** MOBILE MENU NAV (IN PAGE FOOTER) ***************/
+nav#mobile-menu {
+  display: flex;
+  flex-flow: row;
+  margin-top: 20px;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+/* Desktop Nav */
+nav#desktop-tablet-menu {
+  display: none;
+}
+
+nav#mobile-menu a {
+  font-size: 0.9rem;
+}
+
+/*************** MEDIA QUERIES - LARGER SCREEN SIZES ***************/
+
+@media screen and (min-width: 750px) {
+  /*************** MAIN PAGE ELEMENTS ***************/
+  header#site-header,
+  footer#site-footer {
+    border-radius: 0;
+    position: static;
   }
-  
-#mainMenu.showMenu {
-height: 300px;
-opacity: 1;
-}
 
-a.navbar-item {
+  main {
+    width: 50%;
+    padding: 20px;
+  }
+
+  nav#desktop-tablet-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  nav#mobile-menu {
+    display: none;
+  }
+
+  nav#desktop-tablet-menu a,
+  nav#desktop-tablet-menu div.dropdown p.dropdown-header {
+    font-size: 1.2rem;
+    margin: 0 30px;
+  }
+
+  p.dropdown-header {
+    font-weight: bold;
+    color: var(--link-color);
+  }
+
+  div.dropdown:hover {
+    cursor: pointer;
+  }
+
+  div.dropdown:hover p.dropdown-header {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+
+  div.dropdown div.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    padding: 10px;
+    z-index: 1;
+  }
+
+  div.dropdown:hover div.dropdown-content {
     display: block;
-}
+  }
 
-@media screen and (min-width: 1024px) {
-    #mobileMenuBtn {
-        display: none;
-    }
+  nav#desktop-tablet-menu div.dropdown div.dropdown-content a {
+    display: block;
+    float: none;
+    margin: 0;
+  }
 
-    #mainMenu {
-        height: auto;
-        opacity: 1;
-    }
+  div#desktop-footer-content {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
 
-    a.navbar-item {
-        display: inline;
-        margin-right: 10px;
-    }
+  /*************** FORM ELEMENTS ***************/
+
+  form {
+    width: 50%;
+    text-align: left;
+  }
 }
