@@ -1,21 +1,21 @@
-import re
+# import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.db import models
+# from django.db import models
 from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
-from datetime import date
+# from datetime import date
 from .models import *
 import uuid
 import boto3
-import datetime
+# import datetime
 from PIL import Image
 import io
 # import cv2
-import numpy as np
+# import numpy as np
 import random
 
 # Amazon S3 settings
@@ -54,8 +54,15 @@ def photo_save(request):
             is_public = True,
             user = request.user)
         photo.save()
-        return JsonResponse({'url':reverse('photo_detail',kwargs={'id':photo.id})})
+        return JsonResponse({'url':reverse('sandwich_from_photo',kwargs={'photo_id':photo.id})})
+    else:
+        # Something went wrong
+        return JsonResponse({
+            'url':reverse('photo_new'),
+            'error':'There was an error saving the photo'
+        })
 
+# photo saving helper functions
 def save_to_s3(image_file, orig_img):
     s3 = boto3.client('s3')
     key = uuid.uuid4().hex[:6] + orig_img.name[orig_img.name.rfind('.'):]
@@ -77,21 +84,14 @@ def photo_detail(request, id):
     photo = Photo.objects.get(id=id)
     return render(request, 'photo/detail.html', {'photo':photo})
 
-
-# added lines below for sandwich_new controller to help stack
-# slices
-
 def index(request):
     return render(request, 'index.html')
-
 
 def index_redirect(request):
     return redirect('/')
 
-
 def about(request):
     return render(request, 'about.html')
-
 
 def sandwich_index(request):
     # get all sandwiches
@@ -132,11 +132,28 @@ def random_slices():
     return (top_string, middle_string, bottom_string)
 # contains new page that has all of the image slices as strings
 
-
 def sandwich_new(request):
     (top_string, middle_string, bottom_string) = random_slices()
-    return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string})
+    return render(request, 'sandwich/workshop.html', {
+        'top_string': top_string, 
+        'middle_string': middle_string, 
+        'bottom_string': bottom_string
+    })
 
+def sandwich_from_photo(request, photo_id):
+    (top_string, middle_string, bottom_string) = random_slices()
+    photo = Photo.objects.get(id=photo_id)
+    return render(request, 'sandwich/workshop.html', {
+        'top_string': top_string, 
+        'middle_string': middle_string, 
+        'bottom_string': bottom_string, 
+        'top': photo.top, 
+        'middle': photo.middle, 
+        'bottom': photo.bottom, 
+        'top_id': photo.id, 
+        'middle_id': photo.id, 
+        'bottom_id': photo.id
+    })
 
 def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
     if (Sandwich.objects.get(id=sandwich_id).user_id == request.user.id):
@@ -144,10 +161,20 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         sandwich_top = Photo.objects.get(id=top_id).top
         sandwich_middle = Photo.objects.get(id=middle_id).middle
         sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
-        return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string, 'top': sandwich_top, 'middle': sandwich_middle, 'bottom': sandwich_bottom, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id})
+        return render(request, 'sandwich/workshop.html', {
+            'top_string': top_string, 
+            'middle_string': middle_string, 
+            'bottom_string': bottom_string, 
+            'top': sandwich_top, 
+            'middle': sandwich_middle, 
+            'bottom': sandwich_bottom, 
+            'sandwich_id': sandwich_id, 
+            'top_id': top_id, 
+            'middle_id': middle_id, 
+            'bottom_id': bottom_id
+        })
     else:
         raise PermissionDenied
-
 
 @login_required
 def sandwich_create(request, top_id, middle_id, bottom_id):
@@ -176,7 +203,14 @@ def sandwich_detail(request, sandwich_id):
         bottom_id = sandwich.bottom_id
         print("sandwich in detail is", sandwich.id)
         user_id = sandwich.user_id
-        return render(request, 'sandwich/detail.html', {'sandwich': sandwich, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'user_id': user_id})
+        return render(request, 'sandwich/detail.html', {
+            'sandwich': sandwich, 
+            'sandwich_id': sandwich_id, 
+            'top_id': top_id, 
+            'middle_id': middle_id, 
+            'bottom_id': bottom_id, 
+            'user_id': user_id
+        })
     else:
         return redirect('/sandwiches/')
 
@@ -203,7 +237,12 @@ def user_profile(request, user_id):
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
     user = User.objects.get(id=user_id)
-    return render(request, 'user/profile.html', {'profile_user': profile_user, 'photos': photos, 'sandwiches': sandwiches, 'user': user})
+    return render(request, 'user/profile.html', {
+        'profile_user': profile_user, 
+        'photos': photos, 
+        'sandwiches': sandwiches, 
+        'user': user
+    })
 
 
 @login_required
@@ -251,7 +290,11 @@ def user_sandwich_gallery(request, user_id):
     profile_user = User.objects.get(id=user_id)
     gallery_title = profile_user.username + '\'s Sandwich Gallery'
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    return render(request, 'sandwich/gallery.html', {'gallery_title': gallery_title, 'gallery_type': 'user', 'sandwiches': sandwiches})
+    return render(request, 'sandwich/gallery.html', {
+        'gallery_title': gallery_title, 
+        'gallery_type': 'user', 
+        'sandwiches': sandwiches
+    })
 
 
 @login_required
