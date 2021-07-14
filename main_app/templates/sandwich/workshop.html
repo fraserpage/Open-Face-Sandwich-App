@@ -4,7 +4,9 @@
 
 {% block content %}
 <h1 class="page-headline">Sandwich Workshop</h1>
-
+<div>
+    <a href="{% url 'photo_new' %}" class="button">Add a photo</a>
+</div>
 <p hidden="true" id='top-list'> {{ top_string }}</p>
 <p hidden="true" id='middle-list'>{{ middle_string }}</p>
 <p hidden="true" id='bottom-list'>{{ bottom_string }}</p>
