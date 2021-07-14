@@ -23,12 +23,14 @@ S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
 BUCKET = 'open-face-sandwich'
 
 # photo crop lines
-crop__mid = 0.4 # top of mid block
-crop_low = 0.68 # bottom of mid block
+crop__mid = 0.4  # top of mid block
+crop_low = 0.68  # bottom of mid block
+
 
 @login_required
 def photo_new(request):
     return render(request, 'photo/new.html', {'crop_mid': crop__mid*100, 'crop_low': crop_low*100})
+
 
 @login_required
 def photo_save(request):
@@ -38,36 +40,41 @@ def photo_save(request):
         width = pil_image.width
         height = pil_image.height
 
-        top_img = crop_image(pil_image,(0, 0, width, height * crop__mid))
+        top_img = crop_image(pil_image, (0, 0, width, height * crop__mid))
         top_url = save_to_s3(top_img, image_file)
-        
-        middle_img = crop_image(pil_image,(0, height * crop__mid, width, height * crop_low))
+
+        middle_img = crop_image(
+            pil_image, (0, height * crop__mid, width, height * crop_low))
         middle_url = save_to_s3(middle_img, image_file)
 
-        bottom_img = crop_image(pil_image,(0, height * crop_low, width, height))
+        bottom_img = crop_image(
+            pil_image, (0, height * crop_low, width, height))
         bottom_url = save_to_s3(bottom_img, image_file)
 
         photo = Photo(
-            top = top_url, 
-            middle = middle_url, 
-            bottom = bottom_url, 
-            is_public = True,
-            user = request.user)
+            top=top_url,
+            middle=middle_url,
+            bottom=bottom_url,
+            is_public=True,
+            user=request.user)
         photo.save()
-        return JsonResponse({'url':reverse('sandwich_from_photo',kwargs={'photo_id':photo.id})})
+        return JsonResponse({'url': reverse('sandwich_from_photo', kwargs={'photo_id': photo.id})})
     else:
         # Something went wrong
         return JsonResponse({
-            'url':reverse('photo_new'),
-            'error':'There was an error saving the photo'
+            'url': reverse('photo_new'),
+            'error': 'There was an error saving the photo'
         })
 
 # photo saving helper functions
+
+
 def save_to_s3(image_file, orig_img):
     s3 = boto3.client('s3')
     key = uuid.uuid4().hex[:6] + orig_img.name[orig_img.name.rfind('.'):]
     s3.upload_fileobj(image_file, BUCKET, key)
     return f"{S3_BASE_URL}{BUCKET}/{key}"
+
 
 def crop_image(image, crop):
     cropped_img = image.crop(crop)
@@ -80,18 +87,23 @@ def crop_image(image, crop):
 
     return in_mem_file
 
+
 def photo_detail(request, id):
     photo = Photo.objects.get(id=id)
-    return render(request, 'photo/detail.html', {'photo':photo})
+    return render(request, 'photo/detail.html', {'photo': photo})
+
 
 def index(request):
     return render(request, 'index.html')
 
+
 def index_redirect(request):
     return redirect('/')
 
+
 def about(request):
     return render(request, 'about.html')
+
 
 def sandwich_index(request):
     # get all sandwiches
@@ -132,49 +144,54 @@ def random_slices():
     return (top_string, middle_string, bottom_string)
 # contains new page that has all of the image slices as strings
 
+
 def sandwich_new(request):
     (top_string, middle_string, bottom_string) = random_slices()
     return render(request, 'sandwich/workshop.html', {
-        'top_string': top_string, 
-        'middle_string': middle_string, 
+        'top_string': top_string,
+        'middle_string': middle_string,
         'bottom_string': bottom_string
     })
+
 
 def sandwich_from_photo(request, photo_id):
     (top_string, middle_string, bottom_string) = random_slices()
     photo = Photo.objects.get(id=photo_id)
     return render(request, 'sandwich/workshop.html', {
-        'top_string': top_string, 
-        'middle_string': middle_string, 
-        'bottom_string': bottom_string, 
-        'top': photo.top, 
-        'middle': photo.middle, 
-        'bottom': photo.bottom, 
-        'top_id': photo.id, 
-        'middle_id': photo.id, 
+        'top_string': top_string,
+        'middle_string': middle_string,
+        'bottom_string': bottom_string,
+        'top': photo.top,
+        'middle': photo.middle,
+        'bottom': photo.bottom,
+        'top_id': photo.id,
+        'middle_id': photo.id,
         'bottom_id': photo.id
     })
 
+
 def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
-    if (Sandwich.objects.get(id=sandwich_id).user_id == request.user.id):
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    if (sandwich.user_id == request.user.id):
         (top_string, middle_string, bottom_string) = random_slices()
-        sandwich_top = Photo.objects.get(id=top_id).top
-        sandwich_middle = Photo.objects.get(id=middle_id).middle
-        sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
+        sandwich_top = sandwich.top
+        sandwich_middle = sandwich.middle
+        sandwich_bottom = sandwich.bottom
         return render(request, 'sandwich/workshop.html', {
-            'top_string': top_string, 
-            'middle_string': middle_string, 
-            'bottom_string': bottom_string, 
-            'top': sandwich_top, 
-            'middle': sandwich_middle, 
-            'bottom': sandwich_bottom, 
-            'sandwich_id': sandwich_id, 
-            'top_id': top_id, 
-            'middle_id': middle_id, 
+            'top_string': top_string,
+            'middle_string': middle_string,
+            'bottom_string': bottom_string,
+            'top': sandwich_top,
+            'middle': sandwich_middle,
+            'bottom': sandwich_bottom,
+            'sandwich_id': sandwich_id,
+            'top_id': top_id,
+            'middle_id': middle_id,
             'bottom_id': bottom_id
         })
     else:
         raise PermissionDenied
+
 
 @login_required
 def sandwich_create(request, top_id, middle_id, bottom_id):
@@ -204,11 +221,11 @@ def sandwich_detail(request, sandwich_id):
         print("sandwich in detail is", sandwich.id)
         user_id = sandwich.user_id
         return render(request, 'sandwich/detail.html', {
-            'sandwich': sandwich, 
-            'sandwich_id': sandwich_id, 
-            'top_id': top_id, 
-            'middle_id': middle_id, 
-            'bottom_id': bottom_id, 
+            'sandwich': sandwich,
+            'sandwich_id': sandwich_id,
+            'top_id': top_id,
+            'middle_id': middle_id,
+            'bottom_id': bottom_id,
             'user_id': user_id
         })
     else:
@@ -238,9 +255,9 @@ def user_profile(request, user_id):
     sandwiches = Sandwich.objects.filter(user_id=user_id)
     user = User.objects.get(id=user_id)
     return render(request, 'user/profile.html', {
-        'profile_user': profile_user, 
-        'photos': photos, 
-        'sandwiches': sandwiches, 
+        'profile_user': profile_user,
+        'photos': photos,
+        'sandwiches': sandwiches,
         'user': user
     })
 
@@ -291,8 +308,8 @@ def user_sandwich_gallery(request, user_id):
     gallery_title = profile_user.username + '\'s Sandwich Gallery'
     sandwiches = Sandwich.objects.filter(user_id=user_id)
     return render(request, 'sandwich/gallery.html', {
-        'gallery_title': gallery_title, 
-        'gallery_type': 'user', 
+        'gallery_title': gallery_title,
+        'gallery_type': 'user',
         'sandwiches': sandwiches
     })
 
@@ -331,7 +348,10 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')
+            if "next" in request.POST:
+                return redirect(request.POST['next'])
+            else:
+                return redirect('index')
         else:
             error_message = 'Invalid sign up - try again'
 
