@@ -3,10 +3,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+# from django.db import models
+from django.urls import reverse
+from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
+# from datetime import date
 from .models import *
-# added lines below for sandwich_new controller to help stack
-# slices
+import uuid
+import boto3
+# import datetime
+from PIL import Image
+import io
+# import cv2
+# import numpy as np
 import random
 
 # Amazon S3 settings
@@ -109,15 +118,23 @@ def random_slices():
     top = list(Photo.objects.values_list('top', flat=True))
     middle = list(Photo.objects.values_list('middle', flat=True))
     bottom = list(Photo.objects.values_list('bottom', flat=True))
+
+    print("top_id is", id)
+    print("top is", top)
     tops, middles, bottoms = [], [], []
     for i in range(len(top)):
         tops.append(f'{top[i]}_{str(id[i])}')
         middles.append(f'{middle[i]}_{str(id[i])}')
         bottoms.append(f'{bottom[i]}_{str(id[i])}')
+    print("tops is", tops)
+
     # randomizes the top, middle and bottom lists
     tops = random.sample(tops, len(tops))
     middles = random.sample(middles, len(middles))
     bottoms = random.sample(bottoms, len(bottoms))
+    print("top is", tops)
+    print("middle is", middles)
+    print("bottom is", bottoms)
     # joins them into a string to be used by javascript
     top_string = ','.join(tops)
     middle_string = ','.join(middles)
@@ -159,7 +176,6 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         sandwich_top = Photo.objects.get(id=top_id).top
         sandwich_middle = Photo.objects.get(id=middle_id).middle
         sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
-
         return render(request, 'sandwich/workshop.html', {
             'top_string': top_string,
             'middle_string': middle_string,
@@ -185,7 +201,7 @@ def sandwich_create(request, top_id, middle_id, bottom_id):
         user=request.user,
     )
     sandwich.save()
-    return redirect(f'/sandwiches/{sandwich.id}')
+    return redirect('/sandwiches/')
 
 
 def sandwich_delete(request, sandwich_id):
@@ -201,6 +217,7 @@ def sandwich_detail(request, sandwich_id):
         top_id = sandwich.top_id
         middle_id = sandwich.middle_id
         bottom_id = sandwich.bottom_id
+        print("sandwich in detail is", sandwich.id)
         user_id = sandwich.user_id
         return render(request, 'sandwich/detail.html', {
             'sandwich': sandwich,
@@ -226,6 +243,7 @@ def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
 
 def user_profile(request, user_id):
     profile_user = User.objects.get(id=user_id)
+    print("profile_user.id is", profile_user.id)
     try:
         profile_data = Profile.objects.get(user_id=profile_user.id)
         profile_user.bio = profile_data.bio
@@ -234,10 +252,12 @@ def user_profile(request, user_id):
         pass
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
+    user = User.objects.get(id=user_id)
     return render(request, 'user/profile.html', {
         'profile_user': profile_user,
         'photos': photos,
         'sandwiches': sandwiches,
+        'user': user
     })
 
 
@@ -327,10 +347,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            if "next" in request.POST:
-                return redirect(request.POST['next'])
-            else:
-                return redirect('index')
+            return redirect('index')
         else:
             error_message = 'Invalid sign up - try again'
 

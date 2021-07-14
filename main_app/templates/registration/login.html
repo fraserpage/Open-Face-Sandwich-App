@@ -13,6 +13,4 @@
   <p>Don't have an account? <a href="{% url 'signup' %}?next={{ next }}">Sign up here!</a></p>
 </form><br>
 
-{% if request.GET.next %}<div>{{ request.GET.next }}</div>{% endif %}
-
 {% endblock %}
