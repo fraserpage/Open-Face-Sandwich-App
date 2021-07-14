@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block page_title %}Page Title{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/open_face.css' %}">
+    {% block add_to_head %}{% endblock %}
 </head>
 <body>
     <div id="pageContainer">
@@ -40,5 +41,6 @@
         </footer>
     </div>
     <script src="{% static 'js/page.js' %}"></script>
+    {% block add_to_footer %}{% endblock %}
 </body>
 </html>

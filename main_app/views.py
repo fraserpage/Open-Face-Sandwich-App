@@ -1,12 +1,79 @@
+import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.urls import reverse
+from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from datetime import date
 from .models import *
+import uuid
+import boto3
+import datetime
+from PIL import Image
+import io
+
+# Amazon S3 settings
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'open-face-sandwich'
+# photo crop lines
+crop__mid = 0.4 # top of mid block
+crop_low = 0.68 # bottom of mid block
+
+@login_required
+def photo_new(request):
+    return render(request, 'photo/new.html', {'crop_mid': crop__mid*100, 'crop_low': crop_low*100})
+
+@login_required
+def photo_save(request):
+    image_file = request.FILES.get('image', None)
+    if image_file:
+        pil_image = Image.open(image_file)
+        width = pil_image.width
+        height = pil_image.height
+
+        top_img = crop_image(pil_image,(0, 0, width, height * crop__mid))
+        top_url = save_to_s3(top_img, image_file)
+        
+        middle_img = crop_image(pil_image,(0, height * crop__mid, width, height * crop_low))
+        middle_url = save_to_s3(middle_img, image_file)
+
+        bottom_img = crop_image(pil_image,(0, height * crop_low, width, height))
+        bottom_url = save_to_s3(bottom_img, image_file)
+
+        photo = Photo(
+            top = top_url, 
+            middle = middle_url, 
+            bottom = bottom_url, 
+            is_public = True,
+            user = request.user)
+        photo.save()
+        return JsonResponse({'url':reverse('photo_detail',kwargs={'id':photo.id})})
+
+def save_to_s3(image_file, orig_img):
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + orig_img.name[orig_img.name.rfind('.'):]
+    s3.upload_fileobj(image_file, BUCKET, key)
+    return f"{S3_BASE_URL}{BUCKET}/{key}"
+
+def crop_image(image, crop):
+    cropped_img = image.crop(crop)
+    if cropped_img.mode != 'RGB':
+        cropped_img = cropped_img.convert('RGB')
+
+    in_mem_file = io.BytesIO()
+    cropped_img.save(in_mem_file, format="JPEG")
+    in_mem_file.seek(0)
+
+    return in_mem_file
+
+
+
+def photo_detail(request, id):
+    photo = Photo.objects.get(id=id)
+    return render(request, 'photo/detail.html', {'photo':photo})
 
 def index(request):
     return render(request, 'index.html')
