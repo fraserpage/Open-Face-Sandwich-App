@@ -6,40 +6,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block page_title %}Page Title{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/open_face.css' %}">
 </head>
 <body>
-    <div id="pageContainer">
-        <header id="siteHeader">
-            <button type="button" id="mobileMenuBtn" aria-label="menu">&#9776;</button>
-            <div id="appLogo"><h1>LOGO</h1></div>
-            <nav id="mainMenu" class="navbar">
-                <!-- Possible Desktop or Desktop/Mobile Nav -->
-                <a class="navbar-item" href="/">Home</a>
-                <a class="navbar-item" href="/sandwiches/">Sandwiches</a>
-                <a class="navbar-item" href="/sandwiches/1/">Sandwich Detail</a>
-                <a class="navbar-item" href="/sandwiches/new/">Make a Sandwich</a>
-                <a class="navbar-item" href="/users/1/">User Profile</a></li>
-                <a class="navbar-item" href="/users/1/sandwiches/">User Sandwiches</a>
-                
-                {% if user.is_authenticated %}
-                <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
-                {% else %}
-                    <a class="navbar-item" href="{% url 'login' %}">Login</a>
-                    <a class="navbar-item" href="{% url 'signup' %}">Signup</a>
-                {% endif %}
-                
+    <div id="page-container">
+        <header id="site-header">
+            <div id="app-logo"><a href="/"></a></div>
+            <nav id="desktop-tablet-menu" class="navbar">
+                    <a href="/">Home</a>
+                    <a href="{% url 'sandwich_index' %}">Sandwich Gallery</a>
+                    <a href="{% url 'sandwich_new' %}">Make A Sandwich!</a>
+                    
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <p class="dropdown-header">{{ user.username }}&nbsp;&#8964;</p>
+                        <div class="dropdown-content">
+                            <a href="{% url 'user_profile' user.id %}">My Profile</a>
+                            <a href="{% url 'user_sandwich_gallery' user.id %}">My Sandwiches</a>
+                            <a href="{% url 'user_photo_gallery' user.id %}">My Photos</a>
+                            <a href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'signup' %}">Signup</a>
+                    {% endif %}
             </nav>
         </header>
         <main>
         {% block content %}<h2>Content will go here</h2>{% endblock %}
         </main>
-        <footer id="siteFooter">
-            <nav id="footerMainMenu">
-                <!-- Possible Mobile Nav Here -->
+        <footer id="site-footer">
+            <nav id="mobile-menu">
+                <a href="/">Home</a>
+                <a href="{% url 'sandwich_index' %}">Sandwiches</a>
+                <a href="{% url 'sandwich_new' %}">Make</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'user_profile' user.id %}">Profile</a>
+                <a href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a href="{% url 'login' %}">Log In</a>
+                {% endif %}
             </nav>
+            <div id="desktop-footer-content">Open Face Sandwich App!</div>
         </footer>
     </div>
-    <script src="{% static 'js/page.js' %}"></script>
 </body>
 </html>

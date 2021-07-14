@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from datetime import date, datetime
+from datetime import date
 from .models import *
 # added lines below for sandwich_new controller to help stack
 # slices
@@ -30,7 +30,7 @@ def sandwich_index(request):
     # get all sandwiches
     # sandwiches = Sandwich.objects.filter(is_public=True)
     sandwiches = Sandwich.objects.all()
-    return render(request, 'sandwich/gallery.html', {'sandwiches': sandwiches})
+    return render(request, 'sandwich/gallery.html', {'sandwiches': sandwiches, 'gallery_title': 'Sandwich Gallery', 'gallery_type': 'public'})
 
 
 def random_slices():
@@ -68,126 +68,152 @@ def random_slices():
 
 def sandwich_new(request):
     (top_string, middle_string, bottom_string) = random_slices()
-    # tops = top_string.split(',')
-    # for element in tops:
-    #     top = element.split("_")[0]
-    #     print("top in sandwich new", top)
-
-    # print("Top string is", top_string)
-    # print("Middle string is", middle_string)
-    # print("Bottom string is", bottom_string)
-    # , 'top': tops, 'middle': middles, 'bottom': bottoms})
-    return render(request, 'sandwich/new.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string})
+    return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string})
 
 
-# contains the edit page, which is essentially new but with a specific photo
-# to start and everytime you toggle
-def sandwich_edit(request, top_id, middle_id, bottom_id):
-    (top_string, middle_string, bottom_string) = random_slices()
-    top = Sandwich.objects.get(id=top_id).top
-    middle = Sandwich.objects.get(id=middle_id).middle
-    bottom = Sandwich.objects.get(id=bottom_id).bottom
-    (top, middle, bottom) = (sandwich_top, sandwich.middle, sandwich.bottom)
-    # , 'top': top, 'middle': middle, 'bottom': bottom})
-    return render(request, 'sandwich/new.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string})
-
-
-# this is activated when the button save it is
-# clicked on the new.html template
-def sandwich_create(request, top_id, middle_id, bottom_id):
-    if (request.user):
-        sandwich = Sandwich.objects.create(
-            top_id=top_id,
-            middle_id=middle_id,
-            bottom_id=bottom_id,
-            user=request.user,
-        )
-        sandwich.save()
-        return redirect('/sandwiches/')
+def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
+    if (Sandwich.objects.get(id=sandwich_id).user_id == request.user.id):
+        (top_string, middle_string, bottom_string) = random_slices()
+        sandwich_top = Photo.objects.get(id=top_id).top
+        sandwich_middle = Photo.objects.get(id=middle_id).middle
+        sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
+        return render(request, 'sandwich/workshop.html', {'top_string': top_string, 'middle_string': middle_string, 'bottom_string': bottom_string, 'top': sandwich_top, 'middle': sandwich_middle, 'bottom': sandwich_bottom, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id})
     else:
-        return redirect('/accounts/signup/')
-    """
-        After successful sandwich creation,
-        either redirect the user to the new sandwich's detail page,
-        or to the full gallery.
-        eg: return redirect('/sandwiches/{sandwich.id}')
-        or return redirect('/sandwiches/')
-    """
+        raise PermissionDenied
+
+
+@login_required
+def sandwich_create(request, top_id, middle_id, bottom_id):
+    sandwich = Sandwich.objects.create(
+        top_id=top_id,
+        middle_id=middle_id,
+        bottom_id=bottom_id,
+        user=request.user,
+    )
+    sandwich.save()
+    return redirect('/sandwiches/')
+
+
+def sandwich_delete(request, sandwich_id):
+    Sandwich.objects.filter(id=sandwich_id).delete()
+    return redirect('/sandwiches')
 
 
 def sandwich_detail(request, sandwich_id):
     # get sandwich
-    sandwich = Sandwich.objects.filter(id=sandwich_id)
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    print(f'/sandwiches/{sandwich_id}')
     if (sandwich):
-        return render(request, f'/sandwiches/{sandwich_id}', {'sandwich': sandwich})
+        top_id = sandwich.top_id
+        middle_id = sandwich.middle_id
+        bottom_id = sandwich.bottom_id
+        print("sandwich in detail is", sandwich.id)
+        user_id = sandwich.user_id
+        return render(request, 'sandwich/detail.html', {'sandwich': sandwich, 'sandwich_id': sandwich_id, 'top_id': top_id, 'middle_id': middle_id, 'bottom_id': bottom_id, 'user_id': user_id})
     else:
         return redirect('/sandwiches/')
 
 
-@ login_required
-def sandwich_update(request, sandwich_id):
+@login_required
+def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    sandwich.top_id = top_id
+    sandwich.middle_id = middle_id
+    sandwich.bottom_id = bottom_id
+    sandwich.save()
     return redirect(f'/sandwiches/{sandwich_id}')
 
 
 def user_profile(request, user_id):
-    if request.user.id == user_id:
-        # we queried slices, sandwiches AND user because
-        # we assume a gallery for photos and sandwiches
-        # would be displayed on the profile
-        # get user
-        photos = Photo.objects.filter(user_id=user_id)
-        sandwiches = Sandwich.objects.filter(user_id=user_id)
-        user = User.objects.get(id=user_id)
-        return render(request, 'user/profile.html', {'photos': photos, 'sandwiches': sandwiches, 'user': user})
-    else:
-        raise PermissionDenied
+    profile_user = User.objects.get(id=user_id)
+    print("profile_user.id is", profile_user.id)
+    try:
+        profile_data = Profile.objects.get(user_id=profile_user.id)
+        profile_user.bio = profile_data.bio
+        profile_user.img_src = profile_data.img_src
+    except:
+        pass
+    photos = Photo.objects.filter(user_id=user_id)
+    sandwiches = Sandwich.objects.filter(user_id=user_id)
+    user = User.objects.get(id=user_id)
+    return render(request, 'user/profile.html', {'profile_user': profile_user, 'photos': photos, 'sandwiches': sandwiches, 'user': user})
 
 
-@ login_required
+@login_required
 def user_profile_edit(request, user_id):
     if request.user.id == user_id:
-        # get user
-        return render(request, 'user/profile_edit.html', {})
+        profile_user = User.objects.get(id=user_id)
+        try:
+            profile_data = Profile.objects.get(user_id=profile_user.id)
+            profile_user.bio = profile_data.bio
+            profile_user.img_src = profile_data.img_src
+        except:
+            pass
+
+        return render(request, 'user/profile_edit.html', {'profile_user': profile_user})
     else:
         raise PermissionDenied
 
 
-@ login_required
+@login_required
 def user_profile_update(request, user_id):
     if request.user.id == user_id:
-        # get user
-        # apply form data
-        # save user
+        profile_user = User.objects.get(id=user_id)
+        profile_user.email = request.POST['email']
+        profile_user.save()
+
+        profile_data = None
+
+        try:
+            profile_data = Profile.objects.get(user_id=profile_user.id)
+
+        except:
+            profile_data = Profile()
+            profile_data.user_id = profile_user.id
+
+        profile_data.bio = request.POST['bio']
+        profile_data.img_src = request.POST['img-src']
+        profile_data.save()
+
         return redirect(f'/users/{user_id}')
     else:
         raise PermissionDenied
 
 
 def user_sandwich_gallery(request, user_id):
-    # get all sandwiches created by user
+    profile_user = User.objects.get(id=user_id)
+    gallery_title = profile_user.username + '\'s Sandwich Gallery'
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    return render(request, 'sandwich/gallery.html', {'sandwiches': sandwiches})
+    return render(request, 'sandwich/gallery.html', {'gallery_title': gallery_title, 'gallery_type': 'user', 'sandwiches': sandwiches})
 
 
-@ login_required
+@login_required
 def user_photo_gallery(request, user_id):
     if request.user.id == user_id:
-        # get all photo slice groups belonging to user
-        return render(request, 'user/photo/gallery.html', {})
+        profile_user = User.objects.get(id=user_id)
+        photos = Photo.objects.filter(user_id=user_id)
+        print("photos in user_photo_gallery", photos)
+        return render(request, 'user/photo/gallery.html', {'profile_user': profile_user, 'photos': photos})
     else:
         raise PermissionDenied
 
 
-@ login_required
-def user_photo_detail(request, user_id, top_id, middle_id, bottom_id):
+@login_required
+def user_photo_detail(request, user_id, photo_id):
     if request.user.id == user_id:
-        # get photo slice group
-        return render(request, 'user/photo/detail.html', {})
+        photo = Photo.objects.get(id=photo_id, user_id=user_id)
+        return render(request, 'user/photo/detail.html', {'photo': photo, 'user_id': user_id})
     else:
         raise PermissionDenied
 
+
+def photo_delete(request, user_id, photo_id):
+    Photo.objects.filter(id=photo_id).delete()
+    return redirect(f'/users/{user_id}/photos/')
 
 ### USER SIGNUP ###
+
+
 def signup(request):
     error_message = ''
     if request.method == 'POST':

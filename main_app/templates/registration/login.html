@@ -3,12 +3,14 @@
 {% block page_title %}User Log-In{% endblock %}
 
 {% block content %}
-<h2 class="pageSubtitle">User Log-In</h2>
-<form method="post" action="{% url 'login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" class="btn" value="login">
-  <input type="hidden" name="next" value="{{ next }}">
-</form>
+<h1 class="page-headline">User Log-In</h1>
+<form id="user-login-form" name="user-login-form" action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="form-submit" form="user-login-form" value="login">Log In</button>
+    <input type="hidden" name="next" value="{{ next }}"><br>
+  <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here!</a></p>
+</form><br>
+
  
 {% endblock %}

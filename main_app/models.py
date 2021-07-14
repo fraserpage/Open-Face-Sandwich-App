@@ -3,6 +3,12 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 
+class Profile(models.Model):
+    bio = models.TextField()
+    img_src = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class Photo(models.Model):
     top = models.CharField(max_length=255)
     middle = models.CharField(max_length=255)
@@ -14,11 +20,11 @@ class Photo(models.Model):
 
 class Sandwich(models.Model):
     top = models.ForeignKey(
-        Photo, on_delete=models.CASCADE, related_name='top_slice_id')
+        Photo, on_delete=models.CASCADE, related_name='top_id')
     middle = models.ForeignKey(
-        Photo, on_delete=models.CASCADE, related_name='middle_slice_id')
+        Photo, on_delete=models.CASCADE, related_name='middle_id')
     bottom = models.ForeignKey(
-        Photo, on_delete=models.CASCADE, related_name='bottom_slice_id')
+        Photo, on_delete=models.CASCADE, related_name='bottom_id')
     creation_date = models.DateField(auto_now_add=True)
     recent_update = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

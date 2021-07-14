@@ -2,15 +2,17 @@ let topn = document.getElementById('top-list').innerHTML.split(',');
 let middle = document.getElementById('middle-list').innerHTML.split(','); 
 let bottom = document.getElementById('bottom-list').innerHTML.split(','); 
 
-// tops = top_string.split(',')
-// for element in tops:
-//     top = element.split("_")[0]
-//     print("top in sandwich new", top)
+let topId = document.getElementById("top-id").innerHTML;
+let middleId = document.getElementById("middle-id").innerHTML;
+let bottomId = document.getElementById("bottom-id").innerHTML;
+
+let sandwich_id = document.getElementById("sandwich-id").innerHTML;
+
+let top_id, middle_id, bottom_id;
 
 let topArray=[];
 let middleArray=[];
 let bottomArray=[];
-
 
 for (let element of topn) {
     topArray.push([element.split("_")[0],element.split("_")[1]])
@@ -24,32 +26,57 @@ for (let element of bottom) {
     bottomArray.push([element.split("_")[0],element.split("_")[1]])
 }
 
-let top_id = topArray[0][1];
-let middle_id = middleArray[0][1];
-let bottom_id = bottomArray[0][1];
+let topForwardArrowEl = document.getElementById("top-forward-arrow");
+let topBackwardArrowEl = document.getElementById("top-backward-arrow");
+let topCurrentEl = document.getElementById("top-array-output")
 
+let middleForwardArrowEl = document.getElementById("middle-forward-arrow");
+let middleBackwardArrowEl = document.getElementById("middle-backward-arrow");
+let middleCurrentEl = document.getElementById("middle-array-output")
+
+let bottomForwardArrowEl = document.getElementById("bottom-forward-arrow");
+let bottomBackwardArrowEl = document.getElementById("bottom-backward-arrow");
+let bottomCurrentEl = document.getElementById("bottom-array-output")
+
+// Customize this block if you're passing in ids already or not
+if (topId && middleId && bottomId) {
+  top_id = topId;
+  middle_id = middleId;
+  bottom_id = bottomId;
+  for (let element of topArray) {
+    if (element[1] == topId){
+      topCurrentEl.src = element[0];
+    }
+  }
+  for (let element of middleArray) {
+    if (element[1] == middleId){
+      middleCurrentEl.src = element[0];
+    }
+  }
+  for (let element of bottomArray) {
+    if (element[1] == bottomId){
+      bottomCurrentEl.src = element[0];
+    }
+  }
+} else {
+  topCurrentEl.src = topArray[0][0]
+  middleCurrentEl.src = middleArray[0][0]
+  bottomCurrentEl.src = bottomArray[0][0]
+  top_id = topArray[0][1];
+  middle_id = middleArray[0][1];
+  bottom_id = bottomArray[0][1];
+}
 
 let topPosition = topArray.length
 let middlePosition = topArray.length
 let bottomPosition = topArray.length
 
-let topForwardArrowEl = document.getElementById("top-forward-arrow");
-let topBackwardArrowEl = document.getElementById("top-backward-arrow");
-let topCurrentEl = document.getElementById("top-array-output")
-topCurrentEl.src = topArray[0][0]
-
-let middleForwardArrowEl = document.getElementById("middle-forward-arrow");
-let middleBackwardArrowEl = document.getElementById("middle-backward-arrow");
-let middleCurrentEl = document.getElementById("middle-array-output")
-middleCurrentEl.src = middleArray[0][0]
-
-let bottomForwardArrowEl = document.getElementById("bottom-forward-arrow");
-let bottomBackwardArrowEl = document.getElementById("bottom-backward-arrow");
-let bottomCurrentEl = document.getElementById("bottom-array-output")
-bottomCurrentEl.src = bottomArray[0][0]
-
 let formEl = document.getElementById('form')
-console.log("formEl is", formEl)
+if (topId && middleId && bottomId) {
+  formEl.action = `/sandwiches/${sandwich_id}/${top_id}/${middle_id}/${bottom_id}/update/`
+} else {
+  formEl.action = `/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`
+}
 
 topForwardArrowEl.addEventListener("click", () => {topNextRandomSlice(); updatePath()});
 topBackwardArrowEl.addEventListener("click", () => {topPreviousSlice(); updatePath()});
@@ -61,10 +88,12 @@ bottomForwardArrowEl.addEventListener("click", () => {bottomNextRandomSlice(); u
 bottomBackwardArrowEl.addEventListener("click", () => {bottomPreviousSlice(); updatePath()});
 
 function updatePath() {
-    formEl.action = `/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`
-    console.log(`/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`);
+  if (topId && middleId && bottomId) {
+    formEl.action = `/sandwiches/${sandwich_id}/${top_id}/${middle_id}/${bottom_id}/update/`;
+  } else {
+    formEl.action = `/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`;
+  }
 }
-
 
 function topNextRandomSlice() {
   if (topPosition >= topArray.length-1) { 

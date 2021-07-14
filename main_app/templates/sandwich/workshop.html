@@ -1,14 +1,17 @@
 {% extends '../base.html' %}
 {% load static %}
-{% block page_title %}Create a New Sandwich{% endblock %}
+{% block page_title %}Sandwich Workshop{% endblock %}
 
 {% block content %}
-<h2 id="subtitle" class="pageSubtitle">Create a New Sandwich</h2>
+<h1 class="page-headline">Sandwich Workshop</h1>
 
 <p hidden="true" id='top-list'> {{ top_string }}</p>
 <p hidden="true" id='middle-list'>{{ middle_string }}</p>
 <p hidden="true" id='bottom-list'>{{ bottom_string }}</p>
-
+<p hidden="true" id="top-id">{{ top_id }}</p>
+<p hidden="true" id="middle-id">{{ middle_id }}</p>
+<p hidden="true" id="bottom-id">{{ bottom_id }}</p>
+<p hidden="true" id="sandwich-id">{{ sandwich_id }}</p>
 
     <button id="top-backward-arrow"> &larr; </button>
     <img id="top-array-output" src="">
@@ -22,12 +25,14 @@
     <img id="bottom-array-output" src="">
     <button id="bottom-forward-arrow"> &rarr; </button>
 
-
+{% if user.is_authenticated %}
     <form id="form" action="#" method="POST">
         {% csrf_token %}
         <button type="submit">Amazing Sandwich - Save it!</button>
     </form>
-
+{% else %}
+    
+{% endif %}
     <script src="{% static 'js/toggle.js' %}"></script>
 
 
