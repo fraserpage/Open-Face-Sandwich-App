@@ -27,7 +27,7 @@
     {{ form.password2.label_tag }}
     {{ form.password2 }}
     </p>
-
+    {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
   <button type="submit" class="form-submit" form="user-signup-form" value="signup">Sign Up</button><br>
   <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here!</a></p>
 </form>

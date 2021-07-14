@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('home/', views.index_redirect),
 
-    #photos
+    # photos
     path('photo/new/', views.photo_new, name='photo_new'),
     path('photo/save/', views.photo_save, name='photo_save'),
     path('photo/<int:id>/', views.photo_detail, name='photo_detail'),
@@ -18,7 +18,8 @@ urlpatterns = [
 
     # sandwich workshop views
     path('sandwiches/new/', views.sandwich_new, name='sandwich_new'),
-    path('sandwiches/new/<int:photo_id>', views.sandwich_from_photo, name='sandwich_from_photo'),
+    path('sandwiches/new/<int:photo_id>',
+         views.sandwich_from_photo, name='sandwich_from_photo'),
     path('sandwiches/<int:sandwich_id>/<int:top_id>/<int:middle_id>/<int:bottom_id>/edit',
          views.sandwich_edit, name="sandwich_edit"),
 
