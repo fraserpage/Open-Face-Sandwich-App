@@ -7,40 +7,40 @@
 {% endblock add_to_head %}
 
 
-{% block page_title %}Create a New Sandwich{% endblock %}
+{% block page_title %}Add a photo{% endblock %}
 
 {% block content %}
-{{message}}
-<h2 class="pageSubtitle">Create a New Sandwich</h2>
+	{{message}}
+	<h2 class="pageSubtitle">Add a photo</h2>
 
-<label for="croppieInput">Upload Image</label>
-<input type="file" accept="image/*" name="image" id="croppieInput" >
+	<label for="croppieInput">Upload Image</label>
+	<input type="file" accept="image/*" name="image" id="croppieInput" >
 
-
-<div id="image-cropper">
-	<div id="croppie-container"></div>
-	<div id="croplines" class="hidden">
-		<div id="oval"></div>
-		<div id="center-line"></div>
-		<div id="mid-line" style="top:{{crop_mid}}%"></div>
-		<div id="low-line" style="top:{{crop_low}}%"></div>
+	<div id="image-cropper">
+		<div id="status" class="hidden"></div>
+		<div id="croppie-container"></div>
+		<div id="croplines" class="hidden">
+			<div id="oval"></div>
+			<div id="center-line"></div>
+			<div id="mid-line" style="top:{{crop_mid}}%"></div>
+			<div id="low-line" style="top:{{crop_low}}%"></div>
+		</div>
 	</div>
-</div>
-<div id="croppie-actions" class="hidden">
-	<button class="croppie-rotate" data-deg="-90">Rotate Left</button>
-	<button class="croppie-rotate" data-deg="90">Rotate Right</button>
-	<div>
-		<button class="croppie-go">Looks good! Let's make face sandwiches!</button>
-	</div>	
-</div>
+	<div id="croppie-actions" class="hidden">
+		<button class="croppie-rotate" data-deg="-90">Rotate Left</button>
+		<button class="croppie-rotate" data-deg="90">Rotate Right</button>
+		<div>
+			<button class="croppie-go">Looks good! Let's make face sandwiches!</button>
+		</div>	
+	</div>
 
 
-<form id="upload-form" action="{% url 'photo_save' %}" enctype="multipart/form-data" method="post">
-	{% csrf_token %}
-</form>
+	<form id="upload-form" action="{% url 'photo_save' %}" enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+	</form>
 
-<img id="result">
- 
+	<img id="result">
+	
 {% endblock %}
 
 {% block add_to_footer %}

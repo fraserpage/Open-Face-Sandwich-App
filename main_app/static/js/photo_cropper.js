@@ -1,6 +1,8 @@
-
+// Cached elem references
+// ----------------------
 let main = document.querySelector('main')
 let imageInput = document.getElementById('croppieInput')
+let statusElem = document.getElementById('status')
 let croppieContainer = document.getElementById('croppie-container')
 let croppieActionsElem = document.getElementById('croppie-actions')
 let croppieGoBtn =  document.querySelector('.croppie-go')
@@ -9,10 +11,14 @@ let croppieRotateBtns = document.querySelectorAll('.croppie-rotate')
 let croppieInst
 let cropSize = {width: 500, height: 630}
 
-imageInput.addEventListener('change',setupCroppie)
-croppieGoBtn.addEventListener('click', () => cropImageThen(submitForm) );
+// Event listeners
+// ---------------
+imageInput.addEventListener('change', setupCroppie)
+croppieGoBtn.addEventListener('click', croppieGo);
 croppieRotateBtns.forEach( el => el.addEventListener('click', rotateCroppie) )
 
+// Functions
+// ---------
 function setupCroppie(event) {
     // If Croppie already exists destroy it before re-initializing
     if (croppieInst instanceof Croppie) croppieInst.destroy()
@@ -44,6 +50,17 @@ function setupCroppie(event) {
 
 function rotateCroppie() {
     croppieInst.rotate(parseInt(this.dataset.deg));
+}
+
+function croppieGo(){
+    disableBtnAndShowUploadingMsg()
+    cropImageThen(submitForm)
+}
+
+function disableBtnAndShowUploadingMsg(){
+    croppieGoBtn.disabled = true
+    statusElem.classList.remove('hidden')
+    statusElem.innerHTML = "Cropping... Chopping... Uploading..."
 }
 
 function cropImageThen(callback) {

@@ -10,6 +10,15 @@ img{
 #image-cropper {
   position: relative;
 }
+#status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  background: #ffffffc7;
+  padding: 3rem;
+}
 #croplines{
   position: absolute;
   top: 0;
