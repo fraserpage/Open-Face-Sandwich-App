@@ -171,11 +171,12 @@ def sandwich_from_photo(request, photo_id):
 
 
 def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
-    if (Sandwich.objects.get(id=sandwich_id).user_id == request.user.id):
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    if (sandwich.user_id == request.user.id):
         (top_string, middle_string, bottom_string) = random_slices()
-        sandwich_top = Photo.objects.get(id=top_id).top
-        sandwich_middle = Photo.objects.get(id=middle_id).middle
-        sandwich_bottom = Photo.objects.get(id=bottom_id).bottom
+        sandwich_top = sandwich.top
+        sandwich_middle = sandwich.middle
+        sandwich_bottom = sandwich.bottom
         return render(request, 'sandwich/workshop.html', {
             'top_string': top_string,
             'middle_string': middle_string,
