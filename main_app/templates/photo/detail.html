@@ -1,0 +1,11 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block page_title %}Sandwich: {% endblock %}
+
+{% block content %}
+<h2 class="pageSubtitle">Photo: </h2>
+<img src="{{photo.top}}" alt="">
+<img src="{{photo.middle}}" alt="">
+<img src="{{photo.bottom}}" alt="">
+ 
+{% endblock %}

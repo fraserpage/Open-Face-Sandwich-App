@@ -4,13 +4,15 @@
 
 {% block content %}
 <h2 class="pageSubtitle">Sandwich: </h2>
+<div>
     <img class="sandwich-top" src="{{ sandwich.top.top }}">
     <img class="sandwich-middle" src="{{ sandwich.middle.middle }}">
     <img class="sandwich-bottom" src="{{ sandwich.bottom.bottom }}">
+</div>
     <br><br>
     Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
     <br><br>
-  {% if user.id == user_id %}
+  {% if sandwich.user.id == user_id %}
     <a href="/sandwiches/{{ sandwich_id }}/{{ top_id }}/{{ middle_id }}/{{ bottom_id }}/edit"><button>Edit</button></a>
     <a href="/sandwiches/{{ sandwich_id }}/delete"><button>Delete</button></a>
   {% endif %}
