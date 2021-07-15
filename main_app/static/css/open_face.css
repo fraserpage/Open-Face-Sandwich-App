@@ -37,10 +37,6 @@
 
 .odd {
   background-color: var(--color-light-blue);
-  margin: 3em -20px;
-  width: 100vw;
-  padding: 1em 0 2em;
-  min-height: 18em;
 }
 
 .text-align-center {
@@ -103,7 +99,6 @@ main {
 
 header#site-header {
   min-height: 50px;
-  /* border-bottom: 6px var(--color-lighter-yellow) solid; */
   padding: 10px 0;
 }
 
@@ -189,6 +184,16 @@ button, .button {
   border: none;
   border-radius: 3px;
   transition: all .2s;
+  color:black;
+  display: inline-block;
+}
+
+button:hover, 
+.button:hover {
+  cursor: pointer;
+  box-shadow: var(--box-shadow-bottom-right);
+  text-decoration:none;
+  color:black;
 }
 
 button:active {
@@ -310,8 +315,6 @@ nav#mobile-menua.nav-item:hover {
   /*************** MAIN PAGE ELEMENTS ***************/
   header#site-header {
     height: 108px;
-    /* border-bottom: 2px var(--color-lighter-yellow) solid; */
-    /* box-shadow: var(--box-shadow-bottom-right); */
     display: flex;
     align-items: center;
   }
@@ -330,9 +333,7 @@ nav#mobile-menua.nav-item:hover {
 
   a#app-logo img {
     width: 250px;
-    /* height: 100px; */
   }
-
 
   nav#desktop-tablet-menu {
     display: flex;
@@ -438,11 +439,6 @@ nav#mobile-menua.nav-item:hover {
 
   nav#desktop-tablet-menu div.dropdown div.dropdown-content a:hover {
     color: var(--link-hover-color-1);
-  }
-
-  button:hover {
-    cursor: pointer;
-    box-shadow: var(--box-shadow-bottom-right);
   }
 
   img#user-profile-img {
