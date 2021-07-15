@@ -26,21 +26,21 @@
 <body>
     <div id="page-container">
         <header id="site-header">
-            <a id="app-logo" href="/"><img src="{% static 'media/app-logo.png'%}" alt="Open Face Sandwich App Logo"></a>
+            <a id="app-logo" href="/"><img src="{% static 'images/app-logo.png'%}" alt="Open Face Sandwich App Logo"></a>
             <nav id="desktop-tablet-menu" class="navbar">
 
                         <a class="nav-item" href="/">
-                            <img src="{% static 'media/home-icon.png' %}" alt="Home Page Icon">
+                            <img src="{% static 'images/home-icon.png' %}" alt="Home Page Icon">
                             Home
                         </a>
 
                         <a class="nav-item" href="{% url 'sandwich_index' %}">
-                            <img src="{% static 'media/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
+                            <img src="{% static 'images/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
                             Explore
                         </a>
 
                         <a class="nav-item" href="{% url 'sandwich_new' %}">
-                            <img src="{% static 'media/make-icon.png' %}" alt="Make A Sandwich Icon">
+                            <img src="{% static 'images/make-icon.png' %}" alt="Make A Sandwich Icon">
                             Make
                         </a>
 
@@ -60,7 +60,7 @@
                     {% else %}
                         
                         <a class="nav-item" href="{% url 'login' %}">
-                            <img class="profile-img-nav" src="{% static 'media/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                            <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
                             Login/Signup
                         </a>
 
@@ -74,17 +74,17 @@
         <footer id="site-footer">
             <nav id="mobile-menu">
                 <a class="nav-item" href="/">
-                    <img src="{% static 'media/home-icon.png' %}" alt="Home Page Icon">
+                    <img src="{% static 'images/home-icon.png' %}" alt="Home Page Icon">
                     Home
                 </a>
 
                 <a class="nav-item" href="{% url 'sandwich_index' %}">
-                    <img src="{% static 'media/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
+                    <img src="{% static 'images/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
                     Explore
                 </a>
 
                 <a class="nav-item" href="{% url 'sandwich_new' %}">
-                    <img src="{% static 'media/make-icon.png' %}" alt="Make A Sandwich Icon">
+                    <img src="{% static 'images/make-icon.png' %}" alt="Make A Sandwich Icon">
                     Make
                 </a>
                 {% if user.is_authenticated %}
@@ -94,7 +94,7 @@
                 </a>
                 {% else %}
                 <a class="nav-item" href="{% url 'login' %}">
-                    <img class="profile-img-nav" src="{% static 'media/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                    <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
                     Login/Signup
                 </a>
                 {% endif %}
