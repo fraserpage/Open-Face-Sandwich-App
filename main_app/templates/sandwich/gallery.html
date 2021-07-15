@@ -14,9 +14,7 @@
     <div id="sandwich-gallery-grid">
             {% for sandwich in sandwiches %}
                 <a href="/sandwiches/{{ sandwich.id }}">   
-                    <img class="sandwich-top" src="{{ sandwich.top.top }}">
-                    <img class="sandwich-middle" src="{{ sandwich.middle.middle }}">
-                    <img class="sandwich-bottom" src="{{ sandwich.bottom.bottom }}">
+                    <img src="{{ sandwich.thumbnail }}">
                     Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
             {% endfor %}
     </div>

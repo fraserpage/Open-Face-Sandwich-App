@@ -27,6 +27,7 @@ class Sandwich(models.Model):
         Photo, on_delete=models.CASCADE, related_name='bottom_id')
     creation_date = models.DateField(auto_now_add=True)
     recent_update = models.DateField(auto_now_add=True)
+    thumbnail = models.TextField(default="thumbnail_url")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # included this in case you wanted to view the sandwich

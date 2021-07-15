@@ -220,9 +220,9 @@ def save_sandwich_thumbnail(sandwich_id):
     sandwich_thumbnail = save_file_to_memory(sandwich_thumbnail)
     s3 = boto3.client('s3')
     key = uuid.uuid4().hex[:6] + str(sandwich_id) + ".jpg"
+    # print("key in save_sandwich_thumbnail", key)
     try:
         s3.upload_fileobj(sandwich_thumbnail, BUCKET, key)
-        # build the full string
         url = f'{S3_BASE_URL}{BUCKET}/{key}'
         return url
     except:
@@ -300,6 +300,17 @@ def user_profile(request, user_id):
     })
 
 
+@login_required
+def set_profile_photo(request, sandwich_id):
+    print("user set profile photo worked")
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    profile_data = Profile.objects.get(user_id=request.user.id)
+    profile_data.img_src = sandwich.thumbnail
+    print("user set profile data after setting img", profile_data.img_src)
+    profile_data.save()
+    return redirect(f'/users/{request.user.id}/')
+    
+    
 @login_required
 def user_profile_edit(request, user_id):
     if request.user.id == user_id:

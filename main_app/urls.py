@@ -48,6 +48,7 @@ urlpatterns = [
     path('users/<int:user_id>/photos/<int:photo_id>/',
          views.user_photo_detail, name='user_photo_detail'),
     path('accounts/signup/', views.signup, name='signup'),
+    path('sandwiches/<int:sandwich_id>/profile_photo/', views.set_profile_photo),
 
     # delete a photo
     path('users/<int:user_id>/photos/<int:photo_id>/delete', views.photo_delete),

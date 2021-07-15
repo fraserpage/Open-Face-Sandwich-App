@@ -10,7 +10,9 @@
     <input type="email" id="user-email" name="email" form="user-profile-edit-form" value="{{ profile_user.email }}">
     <label for="user-bio">Bio:</label>
     <textarea id="user-bio" name="bio" form="user-profile-edit-form">{{ profile_user.bio }}</textarea>
-    <input type="hidden" id="user-img-src" name="img-src" form="user-profile-edit-form" value="{% static 'images/profile-placeholder.png' %}">
+    {% if not profile_user.img_src %}
+    <input type="hidden" id="user-img-src" name="img-src" form="user-profile-edit-form" value="{% static 'images/profile-placeholder.png' %}">    
+    {% endif %}
     <button type="submit" id="user-profile-edit-submit" name="user-profile-edit-submit" form="user-profile-edit-form">SUBMIT</button>
   </form>
  
