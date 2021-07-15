@@ -7,7 +7,7 @@ let middleId = document.getElementById("middle-id").innerHTML;
 let bottomId = document.getElementById("bottom-id").innerHTML;
 
 let sandwich_id = document.getElementById("sandwich-id").innerHTML;
-
+console.log(sandwich_id==true, "sandwich id in toggle.js")
 let top_id, middle_id, bottom_id;
 
 let topArray=[];
@@ -72,7 +72,8 @@ let middlePosition = topArray.length
 let bottomPosition = topArray.length
 
 let formEl = document.getElementById('form')
-if (topId && middleId && bottomId) {
+console.log("sandwich id is", sandwich_id)
+if (sandwich_id) {
   formEl.action = `/sandwiches/${sandwich_id}/${top_id}/${middle_id}/${bottom_id}/update/`
 } else {
   formEl.action = `/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`
@@ -88,7 +89,8 @@ bottomForwardArrowEl.addEventListener("click", () => {bottomNextRandomSlice(); u
 bottomBackwardArrowEl.addEventListener("click", () => {bottomPreviousSlice(); updatePath()});
 
 function updatePath() {
-  if (topId && middleId && bottomId) {
+  console.log(sandwich_id)
+  if (sandwich_id) {
     formEl.action = `/sandwiches/${sandwich_id}/${top_id}/${middle_id}/${bottom_id}/update/`;
   } else {
     formEl.action = `/sandwiches/${top_id}/${middle_id}/${bottom_id}/create/`;
