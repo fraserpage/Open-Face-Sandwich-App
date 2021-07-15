@@ -1,20 +1,23 @@
 {% extends '../base.html' %}
 {% load static %}
+
 {% block add_to_head %}
-<link rel="stylesheet" href="{% static 'css/croppie.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/photo_cropper.css' %}">
-
+	<link rel="stylesheet" type="text/css" href="{% static 'css/croppie.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/photo_cropper.css' %}">
+	<script defer src="{% static 'js/exif.js' %}"></script>	
+	<script defer src="{% static 'js/croppie.js' %}"></script>	
+	<script defer src="{% static 'js/photo_cropper.js' %}"></script>
 {% endblock add_to_head %}
-
 
 {% block page_title %}Add a photo{% endblock %}
 
 {% block content %}
-	{{message}}
+
 	<h2 class="pageSubtitle">Add a photo</h2>
 
-	<label for="croppieInput">Upload Image</label>
-	<input type="file" accept="image/*" name="image" id="croppieInput" >
+
+	<label class="button" for="croppieInput">Upload Image</label>
+	<input class="hidden" type="file" accept="image/*" name="image" id="croppieInput" >
 
 	<div id="image-cropper">
 		<div id="status" class="hidden"></div>
@@ -26,7 +29,9 @@
 			<div id="low-line" style="top:{{crop_low}}%"></div>
 		</div>
 	</div>
+
 	<div id="croppie-actions" class="hidden">
+		<p>Try to position the face so that the eyes and nose are in the center block, the face is contained in the oval and is centered along the vertical line. Use the slider to scale your photo and grab it to drag it around inside the box.</p>
 		<button class="croppie-rotate" data-deg="-90">Rotate Left</button>
 		<button class="croppie-rotate" data-deg="90">Rotate Right</button>
 		<div>
@@ -34,17 +39,8 @@
 		</div>	
 	</div>
 
-
 	<form id="upload-form" action="{% url 'photo_save' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 	</form>
 
-	<img id="result">
-	
-{% endblock %}
-
-{% block add_to_footer %}
-	<script src="{% static 'js/exif.js' %}"></script>	
-	<script src="{% static 'js/croppie.js' %}"></script>	
-	<script src="{% static 'js/photo_cropper.js' %}"></script>
 {% endblock %}
