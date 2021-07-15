@@ -2,6 +2,10 @@
 {% load static %}
 {% block page_title %}Sandwich Workshop{% endblock %}
 
+{% block add_to_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/workshop.css' %}">
+{% endblock add_to_head %}
+
 {% block content %}
 <h1 class="page-headline">Sandwich Workshop</h1>
 <div>
@@ -26,6 +30,32 @@
     <button id="bottom-backward-arrow"> &larr; </button>
     <img id="bottom-array-output" src="">
     <button id="bottom-forward-arrow"> &rarr; </button>
+
+<div class="scene">
+    <div class="cubes">
+        <div class="cube">
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+        </div>
+        <div class="cube">
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+        </div>
+        <div class="cube">
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+            <div class="cube-face"></div>
+        </div>
+    </div>
+</div>
 
     <form id="form" action="#" method="POST">
         {% csrf_token %}

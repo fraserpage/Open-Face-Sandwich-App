@@ -1,0 +1,64 @@
+/* With thanks to https://css-tricks.com/simplifying-css-cubes-custom-properties/ */
+
+.scene, 
+.scene *{
+  font-size: min(5.5vmin, 50px);
+}
+.scene{
+  height: 21em;
+  perspective: 50em;
+}
+
+.cubes {
+  transform: rotateX(-4deg);
+  transform-style: preserve-3d;
+}
+
+.cube,
+.cube-face{
+   position: absolute 
+}
+
+.cube {
+  top: 8em;
+  left: 50%;
+  transform-style: preserve-3d;
+  transform: rotateY(-9deg);
+  transition: transform 0.5s;
+  --cube-height: 5em;
+  --cube-width: 10em;
+  --cube-half-width: 5em;
+  --neg-cube-half-width: -5em;
+}
+.cube:nth-child(2){
+  top: 13.5em;
+  --cube-height: 3.5em;
+}
+.cube:nth-child(3){
+  top: 17.5em;
+  --cube-height: 4em;
+}
+
+.cube-face {
+  margin: var(--neg-cube-half-width);
+  height: var(--cube-height); 
+  width: var(--cube-width);
+  box-shadow: 0 0 0 2px;
+  --i: 0;
+  transform: 
+    rotate3d(var(--i, 0), var(--j, 1), 0, var(--a, 0deg)) 
+    translateZ(var(--tz, var(--cube-half-width)));
+  background: pink;
+}
+
+.cube-face:nth-child(2) { --a: 90deg }
+.cube-face:nth-child(3) { --a: 180deg }
+.cube-face:nth-child(4) { --a: 270deg }
+
+.cube-face:nth-child(5) { 
+  --i: 1; 
+  --j: 0; 
+  --a: 90deg;
+  --tz: var(--cube-half-width);
+  height: var(--cube-width);
+}
