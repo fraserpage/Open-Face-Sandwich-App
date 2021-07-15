@@ -12,8 +12,8 @@
 {% block page_title %}Add a photo{% endblock %}
 
 {% block content %}
-
-	<h2 class="pageSubtitle">Add a photo</h2>
+<article>
+	<h1 class="pageSubtitle">Add A Photo</h1>
 
 
 	<label class="button" for="croppieInput">Upload Image</label>
@@ -42,5 +42,5 @@
 	<form id="upload-form" action="{% url 'photo_save' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 	</form>
-
+</article>
 {% endblock %}

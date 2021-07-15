@@ -251,7 +251,13 @@ def user_profile(request, user_id):
 def set_profile_photo(request, sandwich_id):
     print("user set profile photo worked")
     sandwich = Sandwich.objects.get(id=sandwich_id)
-    profile_data = Profile.objects.get(user_id=request.user.id)
+    try:
+        profile_data = Profile.objects.get(user_id=request.user.id)
+
+    except:
+        profile_data = Profile()
+        profile_data.user_id = request.user.id
+
     profile_data.img_src = sandwich.thumbnail
     print("user set profile data after setting img", profile_data.img_src)
     profile_data.save()
@@ -301,11 +307,10 @@ def user_profile_update(request, user_id):
 
 def user_sandwich_gallery(request, user_id):
     profile_user = User.objects.get(id=user_id)
-    gallery_title = profile_user.username + '\'s Sandwich Gallery'
     sandwiches = Sandwich.objects.filter(user_id=user_id)
     return render(request, 'sandwich/gallery.html', {
-        'gallery_title': gallery_title,
         'gallery_type': 'user',
+        'profile_user': profile_user,
         'sandwiches': sandwiches
     })
 

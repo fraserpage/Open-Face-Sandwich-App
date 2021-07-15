@@ -3,33 +3,35 @@
 {% block page_title %}New User Signup{% endblock %}
 
 {% block content %}
-<h1 class="page-headline">New User Signup</h1>
-{% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+<article>
+  <h1 class="page-headline">New User Signup</h1>
+  {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
 
-<form id="user-signup-form" name="user-signup-form" action="{% url 'signup' %}" method="POST">
-  {% csrf_token %}
-  <p>
-    {{ form.username.label_tag }}
-    {{ form.username}}
-    </p>
-
-    <p> 
-    {{ form.email.label_tag }}
-    {{ form.email }}
-    </p>
-
+  <form id="user-signup-form" name="user-signup-form" action="{% url 'signup' %}" method="POST">
+    {% csrf_token %}
     <p>
-    {{ form.password1.label_tag }}
-    {{ form.password1 }}
-    </p>
+      {{ form.username.label_tag }}
+      {{ form.username}}
+      </p>
 
-    <p>
-    {{ form.password2.label_tag }}
-    {{ form.password2 }}
-    </p>
-    {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
-  <button type="submit" class="form-submit" form="user-signup-form" value="signup">Sign Up</button><br>
-  <h3 class='font-main'>Already have an account? <a href="{% url 'login' %}" class="underlined">Log In here!</a></h3>
-</form>
+      <p> 
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      </p>
 
+      <p>
+      {{ form.password1.label_tag }}
+      {{ form.password1 }}
+      </p>
+
+      <p>
+      {{ form.password2.label_tag }}
+      {{ form.password2 }}
+      </p>
+      {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+    <button type="submit" class="form-submit" form="user-signup-form" value="signup">Sign Up</button><br>
+    <h3 class='font-main'>Already have an account?<br>
+      <a href="{% url 'login' %}" class="underlined">Log In here!</a></h3>
+  </form>
+</article>
 {% endblock %}

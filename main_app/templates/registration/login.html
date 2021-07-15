@@ -3,13 +3,16 @@
 {% block page_title %}User Log-In{% endblock %}
 
 {% block content %}
-<h1 class="page-headline">User Log-In</h1>
-<form id="user-login-form" name="user-login-form" action="{% url 'login' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="form-submit" form="user-login-form" value="login">Log In</button>
-    <input type="hidden" name="next" value="{{ next }}"><br>
-  <h3 class='font-main'>Don't have an account? <a href="{% url 'signup' %}?next={{ next }}"" class="underlined">Sign up here!</a></h3>
-</form><br>
+<article>
+  <h1 class="page-headline">User Log-In</h1>
+  <form id="user-login-form" name="user-login-form" action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="form-submit" form="user-login-form" value="login">Log In</button>
+      <input type="hidden" name="next" value="{{ next }}"><br>
+    <h3 class='font-main'>Don't have an account?<br>
+      <a href="{% url 'signup' %}?next={{ next }}"" class="underlined">Sign up here!</a></h3>
+  </form>
+</article>
 
 {% endblock %}

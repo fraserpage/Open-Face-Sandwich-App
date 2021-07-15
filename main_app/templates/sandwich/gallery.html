@@ -4,19 +4,35 @@
 {% block page_title %}{% endblock %} 
 
 {% block content %}
-<h1 class="page-headline">{{gallery_title}}</h1>
+<article>
+    <h1 class="page-headline">Sandwich Gallery</h1>
     {% if gallery_type == 'user' %}
-        <div id="user-mini-profile">User Mini profile goes here</div>
+        <div id="gallery-user-mini-profile">
+            <h3>Sandwiches Made By</h3>
+            <a href="/users/{{ profile_user.id }}">
+            {% if profile_user.img_src %}
+                <img id="user-gallery-profile-image" src="{{ profile_user.img_src }}" alt="{{ profile_user.username }}'s profile image">
+            {% else %}
+                <img id="user-gallery-profile-image" src="{% static 'images/profile-placeholder.png' %}" alt="{{ profile_user.username }}'s profile image">
+            {% endif %}
+                <h2>{{ profile_user.username }}</h2>
+            </a>
+        </div>
     {% endif %}
+    
     {% if user.is_authenticated %}
-    <a class="underlined" href="{% url 'sandwich_new' %}">Make a new sandwich!</a>
+    <a class="button" href="{% url 'sandwich_new' %}">Make a new sandwich!</a>
     {% endif %}
-    <div id="sandwich-gallery-grid">
+    <div id="gallery-grid">
+        {% if sandwiches.count %}
             {% for sandwich in sandwiches %}
                 <a href="/sandwiches/{{ sandwich.id }}">   
-                    <img src="{{ sandwich.thumbnail }}">
-                    Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
+                    <img class="sandwich-gallery-thumbnail" src="{{ sandwich.thumbnail }}">
+                </a>
             {% endfor %}
+        {% else %}
+            <h3>No sandwiches... yet.</h3>
+        {% endif %}
     </div>
- 
+</article>
 {% endblock %}
