@@ -37,7 +37,7 @@
 
 {% block content %}
 <h1 class="page-headline">Sandwich Workshop</h1>
-<div>
+<div id="photo-btn-outer" class="text-align-center">
     <a href="{% url 'photo_new' %}" class="button">Add a photo</a>
 </div>
     <div class="scene">
@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <form id="form" action="#" method="POST">
+    <form id="form" action="#" method="POST" class="text-align-center">
         {% csrf_token %}
         <button type="submit">
             {% if edit_sandwich %}
