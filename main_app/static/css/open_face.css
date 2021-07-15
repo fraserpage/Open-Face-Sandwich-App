@@ -189,7 +189,6 @@ button {
 }
 
 button:active {
-    padding: 5px;
     font-weight: bold;
     background-color: var(--color-lighter-yellow);
 }
@@ -232,7 +231,8 @@ textarea {
   padding: 10px;
 }
 
-button.form-submit {
+button.form-submit,
+button.form-submit:hover {
   padding: 15px;
 }
 
