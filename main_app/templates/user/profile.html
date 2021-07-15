@@ -3,16 +3,25 @@
 {% block page_title %}User Profile: {{ profile_user.username }}{% endblock %}
 
 {% block content %}
-<!-- <h2 class="page-headline">User Profile: {{ profile_user.username }}</h2> -->
-<h2 class="page-headline">User Profile: {{ profile_user.username }}</h2>
-{% if user.is_authenticated and user.id == profile_user.id %}
-    <a href="{% url 'user_profile_edit' profile_user.id %}">Edit Profile</a><br>
-    <a href="{% url 'user_photo_gallery' profile_user.id %}">Photo Gallery</a><br>
-{% endif %}
+<article>
 {% if profile_user.img_src %}
-    <img id="user-img" src="{{ profile_user.img_src }}" alt="user img goes here">  
+    <img id="user-profile-img" src="{{ profile_user.img_src }}" alt="{{ profile_user.username }}'s profile image">  
 {% endif %}
-<div id="user-bio">{{ profile_user.bio|linebreaks }}</div>
-<a href="{% url 'user_sandwich_gallery' profile_user.id %}">Sandwich Gallery!</a>
+<h2 class="page-headline">User Profile: {{ profile_user.username }}</h2>
+<h3><a href="{% url 'user_sandwich_gallery' profile_user.id %}">{{ profile_user.username }}'s Sandwich Gallery!</a></h3>
+{% if user.is_authenticated and user.id == profile_user.id %}
+    <a href="{% url 'user_photo_gallery' profile_user.id %}">Photo Gallery</a><br>
+    <a href="{% url 'user_profile_edit' profile_user.id %}">Edit Profile</a><br>
+    <a href="{% url 'logout' %}">Logout</a>
+{% endif %}
+<h3>About {{ profile_user.username }}</h3>
+<div id="user-bio">
+    {% if profile_user.bio and profile_user.bio != '' %}
+    {{ profile_user.bio|linebreaks }}
+    {% else %}
+        <p>{{ profile_user.username }} hasn't written anything...yet.</p>
+    {% endif %}
+</div>
+</article>
  
 {% endblock %}
