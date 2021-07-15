@@ -5,8 +5,10 @@ from .forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 # from django.db import models
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from django.core.exceptions import PermissionDenied
+from django.core import serializers
+from django.db.models import Q
 # from datetime import date
 from .models import *
 import uuid
@@ -116,83 +118,28 @@ def sandwich_index(request):
     sandwiches = Sandwich.objects.all()
     return render(request, 'sandwich/gallery.html', {'sandwiches': sandwiches, 'gallery_title': 'Sandwich Gallery', 'gallery_type': 'public'})
 
-
-def random_slices():
-    # loads top, middle and bottom into lists
-    id = list(Photo.objects.values_list('id', flat=True))
-    top = list(Photo.objects.values_list('top', flat=True))
-    middle = list(Photo.objects.values_list('middle', flat=True))
-    bottom = list(Photo.objects.values_list('bottom', flat=True))
-
-    print("top_id is", id)
-    print("top is", top)
-    tops, middles, bottoms = [], [], []
-    for i in range(len(top)):
-        tops.append(f'{top[i]}_{str(id[i])}')
-        middles.append(f'{middle[i]}_{str(id[i])}')
-        bottoms.append(f'{bottom[i]}_{str(id[i])}')
-    print("tops is", tops)
-
-    # randomizes the top, middle and bottom lists
-    tops = random.sample(tops, len(tops))
-    middles = random.sample(middles, len(middles))
-    bottoms = random.sample(bottoms, len(bottoms))
-    print("top is", tops)
-    print("middle is", middles)
-    print("bottom is", bottoms)
-    # joins them into a string to be used by javascript
-    top_string = ','.join(tops)
-    middle_string = ','.join(middles)
-    bottom_string = ','.join(bottoms)
-    # pass these strings into the new.html template which
-    # should have a line to connect to toggle.js
-    return (top_string, middle_string, bottom_string)
-# contains new page that has all of the image slices as strings
-
+def photos_for_workshop(request):
+    return Photo.objects.filter(Q(user_id=request.user.id) | Q(is_public=True))
 
 def sandwich_new(request):
-    (top_string, middle_string, bottom_string) = random_slices()
-    return render(request, 'sandwich/workshop.html', {
-        'top_string': top_string,
-        'middle_string': middle_string,
-        'bottom_string': bottom_string
-    })
-
+    photos = photos_for_workshop(request)
+    return render(request, 'sandwich/workshop.html', { 'photos':photos })
 
 def sandwich_from_photo(request, photo_id):
-    (top_string, middle_string, bottom_string) = random_slices()
+    photos = photos_for_workshop(request)
     photo = Photo.objects.get(id=photo_id)
     return render(request, 'sandwich/workshop.html', {
-        'top_string': top_string,
-        'middle_string': middle_string,
-        'bottom_string': bottom_string,
-        'top': photo.top,
-        'middle': photo.middle,
-        'bottom': photo.bottom,
-        'top_id': photo.id,
-        'middle_id': photo.id,
-        'bottom_id': photo.id
+        'photos':photos,
+        'from_photo': photo
     })
-
 
 def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
     sandwich = Sandwich.objects.get(id=sandwich_id)
     if (sandwich.user_id == request.user.id):
-        (top_string, middle_string, bottom_string) = random_slices()
-        sandwich_top = sandwich.top
-        sandwich_middle = sandwich.middle
-        sandwich_bottom = sandwich.bottom
+        photos = photos_for_workshop(request)
         return render(request, 'sandwich/workshop.html', {
-            'top_string': top_string,
-            'middle_string': middle_string,
-            'bottom_string': bottom_string,
-            'top': sandwich_top,
-            'middle': sandwich_middle,
-            'bottom': sandwich_bottom,
-            'sandwich_id': sandwich_id,
-            'top_id': top_id,
-            'middle_id': middle_id,
-            'bottom_id': bottom_id
+            'photos':photos,
+            'edit_sandwich':sandwich
         })
     else:
         raise PermissionDenied
