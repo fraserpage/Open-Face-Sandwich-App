@@ -49,7 +49,11 @@
                     
                     {% if user.is_authenticated %}
                     <div class="dropdown">
-                        <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
+                        {% if user.profile.img_src %}
+                            <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
+                        {% else %}
+                            <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                        {% endif %}
                         <a class="dropdown-header">{{ user.username }}</a>
                         <div class="dropdown-content">
                             <a href="{% url 'user_profile' user.id %}">My Profile</a>
