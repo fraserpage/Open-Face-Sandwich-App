@@ -5,7 +5,7 @@
 {% block add_to_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/workshop.css' %}">
     <script>
-        let currentSandwich
+        let currentSandwich = {}
         {% if from_photo %}
             currentSandwich = {
                 top:{{from_photo.id}},
