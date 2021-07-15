@@ -61,7 +61,7 @@ init()
 
 function init(){
   // currentSandwich == 'undefined' means that we are on the New page (not update or from_photo)
-  if (typeof currentSandwich == 'undefined'){
+  if (typeof currentSandwich.top == 'undefined'){
     setCurrentRandomPhoto('top')
     setCurrentRandomPhoto('middle')
     setCurrentRandomPhoto('bottom')
