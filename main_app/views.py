@@ -1,7 +1,7 @@
 # import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 # from django.db import models
 from django.urls import reverse
@@ -17,6 +17,8 @@ import io
 # import cv2
 # import numpy as np
 import random
+import urllib.request
+import os
 
 # Amazon S3 settings
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
@@ -76,16 +78,19 @@ def save_to_s3(image_file, orig_img):
     return f"{S3_BASE_URL}{BUCKET}/{key}"
 
 
+def save_file_to_memory(new_img):
+    in_mem_file = io.BytesIO()
+    new_img.save(in_mem_file, format="JPEG")
+    in_mem_file.seek(0)
+    return in_mem_file
+
+
 def crop_image(image, crop):
     cropped_img = image.crop(crop)
     if cropped_img.mode != 'RGB':
         cropped_img = cropped_img.convert('RGB')
 
-    in_mem_file = io.BytesIO()
-    cropped_img.save(in_mem_file, format="JPEG")
-    in_mem_file.seek(0)
-
-    return in_mem_file
+    return save_file_to_memory(cropped_img)
 
 
 def photo_detail(request, id):
@@ -193,6 +198,38 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         raise PermissionDenied
 
 
+def get_concat_v(im1, im2, im3):
+    dst = Image.new('RGB', (im1.width,
+                    im1.height + im2.height + im3.height))
+    dst.paste(im1, (0, 0))
+    dst.paste(im2, (0, im1.height))
+    dst.paste(im3, (0, im1.height + im2.height))
+    return dst
+
+
+def save_sandwich_thumbnail(sandwich_id):
+    print("in save sandwich thumbnail")
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    urllib.request.urlretrieve(sandwich.top.top, "top.jpg")
+    top = Image.open("top.jpg")
+    urllib.request.urlretrieve(sandwich.middle.middle, "middle.jpg")
+    middle = Image.open("middle.jpg")
+    urllib.request.urlretrieve(sandwich.bottom.bottom, "bottom.jpg")
+    bottom = Image.open("bottom.jpg")
+    sandwich_thumbnail = get_concat_v(top, middle, bottom)
+    sandwich_thumbnail = save_file_to_memory(sandwich_thumbnail)
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + str(sandwich_id) + ".jpg"
+    try:
+        s3.upload_fileobj(sandwich_thumbnail, BUCKET, key)
+        # build the full string
+        url = f'{S3_BASE_URL}{BUCKET}/{key}'
+        return url
+    except:
+        print('An error occurred uploading file to S3')
+        return ""
+
+
 @login_required
 def sandwich_create(request, top_id, middle_id, bottom_id):
     sandwich = Sandwich.objects.create(
@@ -201,8 +238,9 @@ def sandwich_create(request, top_id, middle_id, bottom_id):
         bottom_id=bottom_id,
         user=request.user,
     )
+    sandwich.thumbnail = save_sandwich_thumbnail(sandwich.id)
     sandwich.save()
-    return redirect('/sandwiches/')
+    return redirect(f'/sandwiches/{sandwich.id}')
 
 
 def sandwich_delete(request, sandwich_id):
