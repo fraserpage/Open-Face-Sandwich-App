@@ -94,7 +94,11 @@
                 </a>
                 {% if user.is_authenticated %}
                 <a class="nav-item" href="{% url 'user_profile' user.id %}">
-                    <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
+                    {% if user.profile.img_src %}
+                        <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
+                    {% else %}
+                        <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                    {% endif %}
                     Profile
                 </a>
                 {% else %}
