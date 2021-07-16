@@ -92,6 +92,8 @@ img{
   font-size: 1rem;
   position: absolute;
   background: transparent;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 .arr-forward{
   right: 5vw;
