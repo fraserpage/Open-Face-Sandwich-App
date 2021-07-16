@@ -60,16 +60,18 @@ let cubeRotation = {
 init()
 
 function init(){
-  // currentSandwich == 'undefined' means that we are on the New page (not update or from_photo)
+  // currentSandwich.top == 'undefined' means that we are on the New page (not update or from_photo) and so will have to populate the current photos
   if (typeof currentSandwich.top == 'undefined'){
     setCurrentRandomPhoto('top')
     setCurrentRandomPhoto('middle')
     setCurrentRandomPhoto('bottom')
   }
   else{
+    // call update path to setup the submit button
     updatePath()
   }
 
+  // set the next photos
   setNextRandomPhoto('top')
   setNextRandomPhoto('middle')
   setNextRandomPhoto('bottom')
@@ -114,7 +116,7 @@ function rotateBlockBack(pos){
   cubeRotation[pos] += 90 
   cubeElems[pos].style.transform = `rotateY(${cubeRotation[pos]}deg)`
   nextPhoto[pos] = currentSandwich[pos] 
-  currentSandwich[pos] = prevPhotos[pos].pop()
+  currentSandwich[pos] = prevPhotos[pos].shift()
   if (typeof currentSandwich[pos] == 'undefined') setCurrentRandomPhoto(pos)
   updatePath()
 }
@@ -136,5 +138,4 @@ function updatePath() {
   else {
     formEl.action = `/sandwiches/${currentSandwich.top}/${currentSandwich.middle}/${currentSandwich.bottom}/create/`;
   }
-  console.log(formEl.action)
 }
