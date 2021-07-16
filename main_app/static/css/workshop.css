@@ -3,17 +3,24 @@ img{
   max-width: 100%;
 }
 
+#photo-btn-outer {
+  position: relative;
+  z-index: 1;
+  margin: 3rem 0 -1em;
+}
+
 .scene, 
 .scene *{
   font-size: min(5.5vmin, 50px);
 }
 .scene{
-  height: 21em;
+  height: 19em;
   perspective: 50em;
   width: 100%;
+  margin: -2em auto -1em;
 }
 .cubes {
-  /* transform: rotateX(-4deg); */
+  transform: rotateX(-4deg);
   transform-style: preserve-3d;
 }
 

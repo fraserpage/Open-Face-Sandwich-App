@@ -36,70 +36,71 @@
 {% endblock add_to_head %}
 
 {% block content %}
-    <h1 class="page-headline">Sandwich Workshop</h1>
-    <div>
-        <a href="{% url 'photo_new' %}" class="button">Add a photo</a>
-    </div>
-        <div class="scene">
-            <div class="arrs">
-                <button id="top-backward-arrow" class="arr arr-back"> &larr; </button>
-                <button id="top-forward-arrow" class="arr arr-forward"> &rarr; </button>
-            </div>
-            <div class="arrs">
-                <button id="middle-backward-arrow" class="arr arr-back"> &larr; </button>
-                <button id="middle-forward-arrow" class="arr arr-forward"> &rarr; </button>
-            </div>
-            <div class="arrs">
-                <button id="bottom-backward-arrow" class="arr arr-back"> &larr; </button>
-                <button id="bottom-forward-arrow" class="arr arr-forward"> &rarr; </button>
-            </div>
 
-            <div class="cubes">
-                <div class="cube" id="c1">
-                    <div class="cube-face"> 
-                        {% if from_photo %}
-                            <img src="{{from_photo.top}}" alt="">
-                        {% elif edit_sandwich %}
-                            <img src="{{edit_sandwich.top.top}}" alt="">
-                        {% endif %}
-                    </div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                </div>
-                <div class="cube" id="c2">
-                    <div class="cube-face"> 
-                        {% if from_photo %}
-                            <img src="{{from_photo.middle}}" alt="">
-                        {% elif edit_sandwich %}
-                            <img src="{{edit_sandwich.middle.middle}}" alt="">
-                        {% endif %} 
-                    </div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                </div>
-                <div class="cube" id="c3">
-                    <div class="cube-face"> 
-                        {% if from_photo %}
-                            <img src="{{from_photo.bottom}}" alt="">
-                        {% elif edit_sandwich %}
-                            <img src="{{edit_sandwich.bottom.bottom}}" alt="">
-                        {% endif %}
-                    </div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                    <div class="cube-face"></div>
-                </div>
-            </div>
+<h1 class="page-headline">Sandwich Workshop</h1>
+<div id="photo-btn-outer" class="text-align-center">
+    <a href="{% url 'photo_new' %}" class="button">Add a photo</a>
+</div>
+    <div class="scene">
+        <div class="arrs">
+            <button id="top-backward-arrow" class="arr arr-back"> &larr; </button>
+            <button id="top-forward-arrow" class="arr arr-forward"> &rarr; </button>
+        </div>
+        <div class="arrs">
+            <button id="middle-backward-arrow" class="arr arr-back"> &larr; </button>
+            <button id="middle-forward-arrow" class="arr arr-forward"> &rarr; </button>
+        </div>
+        <div class="arrs">
+            <button id="bottom-backward-arrow" class="arr arr-back"> &larr; </button>
+            <button id="bottom-forward-arrow" class="arr arr-forward"> &rarr; </button>
         </div>
 
-    <form id="form" action="#" method="POST">
+        <div class="cubes">
+            <div class="cube" id="c1">
+                <div class="cube-face"> 
+                    {% if from_photo %}
+                        <img src="{{from_photo.top}}" alt="">
+                    {% elif edit_sandwich %}
+                        <img src="{{edit_sandwich.top.top}}" alt="">
+                    {% endif %}
+                </div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+            </div>
+            <div class="cube" id="c2">
+                <div class="cube-face"> 
+                    {% if from_photo %}
+                        <img src="{{from_photo.middle}}" alt="">
+                    {% elif edit_sandwich %}
+                        <img src="{{edit_sandwich.middle.middle}}" alt="">
+                    {% endif %} 
+                </div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+            </div>
+            <div class="cube" id="c3">
+                <div class="cube-face"> 
+                    {% if from_photo %}
+                        <img src="{{from_photo.bottom}}" alt="">
+                    {% elif edit_sandwich %}
+                        <img src="{{edit_sandwich.bottom.bottom}}" alt="">
+                    {% endif %}
+                </div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+                <div class="cube-face"></div>
+            </div>
+        </div>
+    </div>
+
+    <form id="form" action="#" method="POST" class="text-align-center">
         {% csrf_token %}
         <button type="submit">
             {% if edit_sandwich %}
