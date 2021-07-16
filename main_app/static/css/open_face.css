@@ -277,8 +277,8 @@ div#gallery-user-mini-profile {
 }
 
 img.sandwich-gallery-thumbnail {
-  max-width: 100%;
-  min-width: 50%;
+  max-width: 200px;
+  min-width: 100px;
 }
 
 /*************** FORM ELEMENTS ***************/
