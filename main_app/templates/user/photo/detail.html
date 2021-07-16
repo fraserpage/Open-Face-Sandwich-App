@@ -3,13 +3,16 @@
 {% block page_title %}User Photo {{ photo.id }}: Detail{% endblock %}
 
 {% block content %}
-<article>
+<article  class="text-align-center">
     <h1 class="pageSubtitle">User Photo {{ photo.id }}: Detail </h1>
-    <div>
+    <div class="flex-center">
         <img class="sandwich-top" src="{{ photo.top }}">
         <img class="sandwich-middle" src="{{ photo.middle }}">
         <img class="sandwich-bottom" src="{{ photo.bottom }}">
     </div>
+    <p>
+        <a href="{% url 'sandwich_from_photo' photo.id %}" class="button">Make a new Sandwich starting with this</a>
+    </p>
 </article>
 
 {% endblock %}
