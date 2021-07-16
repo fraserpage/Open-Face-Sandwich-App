@@ -26,26 +26,27 @@
 </head>
 <body>
     <div id="page-container">
-        <header id="site-header">
-            <a id="app-logo" href="/"><img src="{% static 'images/app-logo.png'%}" alt="Open Face Sandwich App Logo"></a>
-            <nav id="desktop-tablet-menu" class="navbar">
+        <div id="site-header-bg">
+            <header id="site-header">
+                <a id="app-logo" href="/"><img src="{% static 'images/app-logo.png'%}" alt="Open Face Sandwich App Logo"></a>
+                <nav id="desktop-tablet-menu" class="navbar">
 
-                        <a class="nav-item" href="/">
-                            <img src="{% static 'images/home-icon.png' %}" alt="Home Page Icon">
-                            Home
-                        </a>
+                            <a class="nav-item" href="/">
+                                <img src="{% static 'images/home-icon.png' %}" alt="Home Page Icon">
+                                Home
+                            </a>
 
-                        <a class="nav-item" href="{% url 'sandwich_index' %}">
-                            <img src="{% static 'images/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
-                            Explore
-                        </a>
+                            <a class="nav-item" href="{% url 'sandwich_index' %}">
+                                <img src="{% static 'images/gallery-icon.png' %}" alt="Explore Sandwich Gallery Icon">
+                                Explore
+                            </a>
 
-                        <a class="nav-item" href="{% url 'sandwich_new' %}">
-                            <img src="{% static 'images/make-icon.png' %}" alt="Make A Sandwich Icon">
-                            Make
-                        </a>
+                            <a class="nav-item" href="{% url 'sandwich_new' %}">
+                                <img src="{% static 'images/make-icon.png' %}" alt="Make A Sandwich Icon">
+                                Make
+                            </a>
 
-                        
+                            
                     
                     {% if user.is_authenticated %}
                     <div class="dropdown">
@@ -61,18 +62,18 @@
                             <a href="{% url 'user_photo_gallery' user.id %}">My Photos</a>
                             <a href="{% url 'logout' %}">Logout</a>
                         </div>
-                    </div>
-                    {% else %}
-                        
-                        <a class="nav-item" href="{% url 'login' %}">
-                            <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
-                            Login/Signup
-                        </a>
+                        {% else %}
+                            
+                          <a class="nav-item" href="{% url 'login' %}">
+                              <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                              Login/Signup
+                          </a>
 
-                    
-                    {% endif %}
-            </nav>
-        </header>
+                        
+                     {% endif %}
+                </nav>
+            </header>
+        </div>
         <main>
         {% block content %}<h2>Content will go here</h2>{% endblock %}
         </main>
@@ -93,19 +94,20 @@
                     Make
                 </a>
                 {% if user.is_authenticated %}
-                <a class="nav-item" href="{% url 'user_profile' user.id %}">
-                    {% if user.profile.img_src %}
-                        <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
-                    {% else %}
-                        <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
-                    {% endif %}
+                 <a class="nav-item" href="{% url 'user_profile' user.id %}">
+
+                  {% if user.profile.img_src %}
+                      <img class="profile-img-nav" src="{{ user.profile.img_src }}" alt="Thumbnail Photo of user {{ user.username }}">
+                  {% else %}
+                      <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Thumbnail Photo of user {{ user.username }}">
+                  {% endif %}
                     Profile
-                </a>
+                  </a>
                 {% else %}
-                <a class="nav-item" href="{% url 'login' %}">
-                    <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
-                    Login/Signup
-                </a>
+                  <a class="nav-item" href="{% url 'login' %}">
+                      <img class="profile-img-nav" src="{% static 'images/profile-placeholder.png' %}" alt="Login / Signup Icon">
+                      Login/Signup
+                  </a>
                 {% endif %}
             </nav>
         </footer>

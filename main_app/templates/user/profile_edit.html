@@ -3,7 +3,8 @@
 {% block page_title %}{{ profile_user.username }}: Edit Profile{% endblock %}
 
 {% block content %}
-<h2 class="page-headline">{{ profile_user.username }}: Edit Profile</h2>
+<article>
+  <h1 class="page-headline">{{ profile_user.username }}: Edit Profile</h1>
   <form id="user-profile-edit-form" name="user-profile-edit-form" action="{% url 'user_profile_update' profile_user.id %}" method="POST">
     {% csrf_token %}
     <label for="user-email">Email:</label>
@@ -15,5 +16,5 @@
     {% endif %}
     <button type="submit" id="user-profile-edit-submit" name="user-profile-edit-submit" form="user-profile-edit-form">SUBMIT</button>
   </form>
- 
+</article>
 {% endblock %}

@@ -1,19 +1,20 @@
 {% extends '../base.html' %}
 {% load static %}
-{% block page_title %}Sandwich: {% endblock %}
+{% block page_title %}Sandwich {{ sandwich.id }}: Detail{% endblock %}
 
 {% block content %}
-<h2 class="pageSubtitle">Sandwich: </h2>
-<div>
-  <img src="{{ sandwich.thumbnail }}">
-</div>
+<article>
+  <h1 class="pageSubtitle">Sandwich {{ sandwich.id }}: Detail</h1>
+  <div>
+    <img src="{{ sandwich.thumbnail }}">
+  </div>
     <br><br>
     Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
     <br><br>
     {% if user.id == sandwich.user.id %}
-    <a href="/sandwiches/{{ sandwich_id }}/profile_photo/"><button>Set Profile Photo</button></a>
-    <a href="/sandwiches/{{ sandwich_id }}/{{ top_id }}/{{ middle_id }}/{{ bottom_id }}/edit"><button>Edit</button></a>
-    <a href="/sandwiches/{{ sandwich_id }}/delete"><button>Delete</button></a>
+    <a class="button" href="/sandwiches/{{ sandwich_id }}/profile_photo/">Set As Profile Photo</a>
+    <a class="button" href="/sandwiches/{{ sandwich_id }}/{{ top_id }}/{{ middle_id }}/{{ bottom_id }}/edit">Edit</a>
+    <a class="button" href="/sandwiches/{{ sandwich_id }}/delete">Delete</a>
   {% endif %}
-
+</article>
 {% endblock %}

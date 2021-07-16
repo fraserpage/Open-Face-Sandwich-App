@@ -1,7 +1,7 @@
 {% extends '../base.html' %}
 {% load static %}
 {% block page_title %}Sandwich Workshop{% endblock %}
-
+<article>
 {% block add_to_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/workshop.css' %}">
     <script>
@@ -36,6 +36,7 @@
 {% endblock add_to_head %}
 
 {% block content %}
+
 <h1 class="page-headline">Sandwich Workshop</h1>
 <div id="photo-btn-outer" class="text-align-center">
     <a href="{% url 'photo_new' %}" class="button">Add a photo</a>
@@ -109,5 +110,5 @@
             {% endif %}
         </button>
     </form>
-    
+</article>
 {% endblock %}
