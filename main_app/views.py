@@ -249,7 +249,6 @@ def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
 
 def user_profile(request, user_id):
     profile_user = User.objects.get(id=user_id)
-    print("profile_user.id is", profile_user.id)
     try:
         profile_data = Profile.objects.get(user_id=profile_user.id)
         profile_user.bio = profile_data.bio
@@ -258,18 +257,18 @@ def user_profile(request, user_id):
         pass
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    user = User.objects.get(id=user_id)
+    profile_user = User.objects.get(id=user_id)
     return render(request, 'user/profile.html', {
         'profile_user': profile_user,
         'photos': photos,
         'sandwiches': sandwiches,
-        'user': user
+        'profile_user': profile_user
     })
 
 
 @login_required
 def set_profile_photo(request, sandwich_id):
-    print("user set profile photo worked")
+    # print("user set profile photo worked")
     sandwich = Sandwich.objects.get(id=sandwich_id)
     try:
         profile_data = Profile.objects.get(user_id=request.user.id)
@@ -279,7 +278,7 @@ def set_profile_photo(request, sandwich_id):
         profile_data.user_id = request.user.id
 
     profile_data.img_src = sandwich.thumbnail
-    print("user set profile data after setting img", profile_data.img_src)
+    # print("user set profile data after setting img", profile_data.img_src)
     profile_data.save()
     return redirect(f'/users/{request.user.id}/')
     

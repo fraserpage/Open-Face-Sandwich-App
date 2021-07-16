@@ -288,7 +288,17 @@ div#gallery-user-mini-profile {
 img.sandwich-gallery-thumbnail {
   max-width: 200px;
   min-width: 100px;
-  margin: 10px;
+  margin: 5px;
+}
+
+#bio-grid {
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  justify-content: space-between;
+} 
+
+img.team-bio-img {
+  max-width: 100px;
 }
 
 /*************** FORM ELEMENTS ***************/
