@@ -36,11 +36,20 @@ A user can: 
 
 
 
-### Screenshot
-Carousel of some sandwiches 
-![Pic](https://imgur.com/4y7Dy4R)
-![Pic](https://)
-![Pic1](https://)
+### Screenshots
+
+<table>
+  <tr>
+    <td>Uploading and Cropping</td>
+     <td>Sandwich Detail Page</td>
+     <td>Mobile View</td>
+  </tr>
+  <tr>
+    <td><img src="ss/cropping.png" width=270 height=480></td>
+    <td><img src="ss/detail.png" width=270 height=480></td>
+    <td><img src="ss/sandwich.png" width=270 height=480></td>
+  </tr>
+ </table>
 
 ### Technologies Used
 
@@ -50,11 +59,11 @@ Carousel of some sandwiches
 - DJANGO
 - PYTHON
 - POSTGRESQL
-- Libraries: Pillow, io, 
+- Libraries: Pillow, AWS S3
 
 ### Getting Started 
 
-Here is the **<a href="#">link</a>** Bon Appétit
+Here is the **<a href="https://open-face-sandwich.herokuapp.com/">link</a>** Bon Appétit
 
 Here is the **<a href="https://trello.com/b/5dwWOlXj/open-face">link</a>**  to the Trello board which includes all the planning that went into creating this beautiful app. 
 
