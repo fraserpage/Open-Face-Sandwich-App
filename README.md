@@ -70,6 +70,7 @@ Here is the **<a href="https://trello.com/b/5dwWOlXj/open-face">link</a>**  to t
 
 ### WHAT IS COMING NEXT?
 - Implement a ‘take a photo’ feature using your webcam or phone’s camera.
-- Utilize a toggle switch to exclude photos apart from your own while creating sandwiches
+- Utilize a toggle switch to exclude photos apart from your own while creating sandwiches.
+- Add a "swipe" interface for browsing the sandwich gallery on mobile.
 - Hold tight for amazing features coming soon. 
 
