@@ -45,9 +45,9 @@ A user can: <br>
      <td>Mobile View</td>
   </tr>
   <tr>
-    <td><img src="ss/cropping.png" width=270 height=480></td>
-    <td><img src="ss/detail.png" width=270 height=480></td>
-    <td><img src="ss/sandwich.png" width=270 height=480></td>
+    <td><img src="ss/cropping.png" style="width:100%"></td>
+    <td><img src="ss/detail.png" style="width:100%"></td>
+    <td><img src="ss/sandwich.png" style="width:100%"></td>
   </tr>
  </table>
 
