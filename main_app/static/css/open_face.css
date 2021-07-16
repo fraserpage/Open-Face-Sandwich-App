@@ -322,9 +322,14 @@ img#sandwich-detail-thumbnail {
   text-align: left;
 }
 
+#bio-grid h4 {
+  padding-bottom: 0;
+}
+
 img.team-bio-img {
   max-width: 100px;
 }
+
 
 /*************** FORM ELEMENTS ***************/
 form {
