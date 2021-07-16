@@ -17,20 +17,25 @@ import urllib.request
 # Static pages
 # -------------
 def index(request):
-    return render(request, 'index.html')
-
+    martin = User.objects.get(id=1)
+    kir = User.objects.get(id=2)
+    david = User.objects.get(id=3)
+    fraser = User.objects.get(id=4)
+    featured1 = Sandwich.objects.get(id=17)
+    featured2 = Sandwich.objects.get(id=32)
+    featured3 = Sandwich.objects.get(id=2)
+    return render(request, 'index.html', {
+        'martin': martin, 
+        'kir': kir, 
+        'david': david, 
+        'fraser': fraser, 
+        'featured1': featured1,
+        'featured2': featured2,
+        'featured3': featured3,
+        })
 
 def index_redirect(request):
     return redirect('/')
-
-
-def about(request):
-    return render(request, 'about.html')
-
-
-# Photo pages
-# -------------
-
 # Amazon S3 settings
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
 BUCKET = 'open-face-sandwich'
@@ -79,8 +84,8 @@ def photo_save(request):
             'error': 'There was an error saving the photo'
         })
 
-
 # photo saving helper functions
+
 
 def save_to_s3(image_file, orig_img):
     s3 = boto3.client('s3')
@@ -249,15 +254,8 @@ def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
 
 def user_profile(request, user_id):
     profile_user = User.objects.get(id=user_id)
-    try:
-        profile_data = Profile.objects.get(user_id=profile_user.id)
-        profile_user.bio = profile_data.bio
-        profile_user.img_src = profile_data.img_src
-    except:
-        pass
     photos = Photo.objects.filter(user_id=user_id)
     sandwiches = Sandwich.objects.filter(user_id=user_id)
-    profile_user = User.objects.get(id=user_id)
     return render(request, 'user/profile.html', {
         'profile_user': profile_user,
         'photos': photos,
@@ -357,7 +355,6 @@ def user_photo_detail(request, user_id, photo_id):
 def photo_delete(request, user_id, photo_id):
     Photo.objects.filter(id=photo_id).delete()
     return redirect(f'/users/{user_id}/photos/')
-
 
 ### USER SIGNUP ###
 

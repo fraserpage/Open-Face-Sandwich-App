@@ -267,8 +267,8 @@ img#user-gallery-profile-image {
 
 div#gallery-user-mini-profile {
   padding-bottom: 30px;
-  margin-bottom: 30px;
-  border-bottom: 2px #ccc solid;
+  width: 98%;
+  margin: 0 auto 30px auto;
 }
 
 .sandwich-top,
@@ -280,22 +280,42 @@ div#gallery-user-mini-profile {
 #gallery-grid {
   display: flex;
   flex-direction: row;
+  align-content: center;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 0 -10px;
+  justify-content: space-between;
 }
 
 img.sandwich-gallery-thumbnail {
-  max-width: 200px;
+  max-width: 150px;
   min-width: 100px;
-  margin: 5px;
+  transition: box-shadow .2s;
+}
+
+img.sandwich-gallery-thumbnail:hover {
+  box-shadow: var(--box-shadow-bottom-right);
+  border: 3px var(--color-light-blue) solid;
+}
+
+img#sandwich-detail-thumbnail {
+  max-width: 300px;
+  min-width: 100px;
 }
 
 #bio-grid {
-  display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-} 
+
+}
+
+#bio-grid div {
+  padding: 20px;
+  text-align: center;
+}
+
+#bio-grid div p {
+  text-align: left;
+}
 
 img.team-bio-img {
   max-width: 100px;
@@ -381,24 +401,25 @@ nav#mobile-menu a.nav-item {
 
 
 nav#mobile-menu img.profile-img-nav,
- nav#mobile-menu a.nav-item img {
+nav#mobile-menu a.nav-item img {
     display: block;
-    width: 40px;
     padding: 2px;
     border-radius: 100%;
     margin-bottom: 5px;
   }
 
 
-  nav#mobile-menu a.nav-item img {
+nav#mobile-menu a.nav-item img {
   background-color: var(--color-off-white);
+  width: 40px;
 }
 
 nav#mobile-menua.nav-item:hover {
   text-decoration: none;
 }
-
-
+nav#mobile-menu img.profile-img-nav {
+  width: 25px;
+}
 
 /*************** MEDIA QUERIES - LARGER SCREEN SIZES ***************/
 
@@ -488,11 +509,14 @@ nav#mobile-menua.nav-item:hover {
  img.profile-img-nav,
  a.nav-item img {
     display: block;
-    width: 45px;
+    
     border-radius: 100%;
     margin-bottom: 5px;
   }
- 
+  
+  a.nav-item img {
+    width: 45px;
+  }
 
   a.nav-item img,
   div.dropdown img {
@@ -503,6 +527,11 @@ nav#mobile-menua.nav-item:hover {
 
   div.dropdown img {
     padding: 0;
+    width: 35px;
+  }
+
+  div.dropdown:hover {
+    cursor: pointer;
   }
 
   a.nav-item:hover img,
@@ -520,8 +549,6 @@ nav#mobile-menua.nav-item:hover {
     cursor: pointer;
     color: var(--color-darker-blue);
   }
-
-
 
   div.dropdown div.dropdown-content {
     display: none;
@@ -554,6 +581,41 @@ nav#mobile-menua.nav-item:hover {
     width: 200px;
     float: left;
     margin-right: 20px;
+  }
+
+  #gallery-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+
+  img.sandwich-gallery-thumbnail {
+    max-width: 200px;
+    min-width: 100px;
+    margin: 5px;
+  }
+
+  div#gallery-user-mini-profile {
+    width: 40%;
+  }
+
+  img#sandwich-detail-thumbnail {
+    max-width: 500px;
+    min-width: 200px;
+  }
+  
+  
+  #bio-grid {
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+  }
+
+  #bio-grid div {
+    text-align: left;
   }
 
   /*************** FORM ELEMENTS ***************/

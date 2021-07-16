@@ -25,6 +25,17 @@
 <section id="featured-sandwiches" class="odd ">
     <article>
         <h2 class="text-align-center">Featured Sandwiches</h2>
+        <div id="gallery-grid">
+            <a href="/sandwiches/{{ featured1.id }}">
+                <img class="sandwich-gallery-thumbnail" src="{{ featured1.thumbnail }}" alt="Featured Open FACE Sandwich 1">
+            </a>
+            <a href="/sandwiches/{{ featured2.id }}">
+                <img class="sandwich-gallery-thumbnail" src="{{ featured2.thumbnail }}" alt="Featured Open FACE Sandwich 2">
+            </a>
+            <a href="/sandwiches/{{ featured3.id }}">
+                <img class="sandwich-gallery-thumbnail" src="{{ featured3.thumbnail }}" alt="Featured Open FACE Sandwich 3">
+            </a>
+        </div>
     </article>
 </section>
 <section id="team-bios" class="even">
@@ -32,32 +43,56 @@
         <h2 class="text-align-center">Team Bios</h2>
         <div id="bio-grid">
             <div>
-                <img class="team-bio-img" src="">
+                <img class="team-bio-img" src="{{ fraser.profile.img_src }}">
                 <h4>Fraser</h4>
-                <p>"In 2010 I had an idea that this might be a fun website to build. 11 years later, the dream is real. And it's glorious."</p>
+                <p>
+                    {% if fraser.profile.bio and fraser.profile.bio != '' %}
+                    {{ fraser.profile.bio|linebreaks }}
+                    {% else %}
+                    "In 2010 I had an idea that this might be a fun website to build. 11 years later, the dream is real. And it's glorious."
+                    {% endif %}
+                </p>
             </div>
             <div>
-                <img class="team-bio-img" src="">
+                <img class="team-bio-img" src="{{ kir.profile.img_src }}">
                 <h4>Kir</h4>
-                <p>“Master Sandwich Maker”</p>
+                <p>
+                    {% if kir.profile.bio and kir.profile.bio != '' %}
+                    {{ kir.profile.bio|linebreaks }}
+                    {% else %}
+                    “Master Sandwich Maker”
+                    {% endif %}
+                </p>
             </div>
             <div>
-                <img class="team-bio-img" src="">
+                <img class="team-bio-img" src="{{ martin.profile.img_src }}">
                 <h4>Martin</h4>
-                <p>Hello,<br><br>
+                <p>
+                    {% if martin.profile.bio and martin.profile.bio != '' %}
+                    {{ martin.profile.bio|linebreaks }}
+                    {% else %}
+                    "Hello,<br><br>
                     My name is Martin Nicola. I absolutely love this app. It was an absolute pleasure working with the team to bring this app to life.<br><br>
                     Also, I love relish and John Cena is cool. Thank you.<br><br>
                     Sincerely,<br>
-                    Martin</p>
+                    Martin"
+                    {% endif %}
+                </p>
             </div>
             <div>
-                <img class="team-bio-img" src="">
+                <img class="team-bio-img" src="{{ david.profile.img_src }}">
                 <h4>David</h4>
-                <p>"...is a libra. He enjoys tea."</p>
+                <p>
+                    {% if david.profile.bio and david.profile.bio != '' %}
+                    {{ david.profile.bio|linebreaks }}
+                    {% else %}
+                    "David is a libra. He enjoys tea."
+                    {% endif %}
+                </p>
             </div>
         </div>
         <br>
-        <h3>Design assistance by Vishal and Olesia</h3>
+        <h3 class="text-align-center">UX design assistance by Vishal and Olesia</h3>
     </article>
 </section>
 {% endblock %}
