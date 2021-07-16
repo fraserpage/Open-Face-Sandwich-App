@@ -131,13 +131,14 @@
 .cr-slider {
     -webkit-appearance: none;
 /*removes default webkit styles*/
-	/*border: 1px solid white; *//*fix for FF unable to apply focus style bug */
+/*border: 1px solid white; *//*fix for FF unable to apply focus style bug */
     width: 300px;
 /*required for proper track sizing in FF*/
     max-width: 100%;
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: transparent;
+    margin: 0 auto;
 }
 
 .cr-slider::-webkit-slider-runnable-track {
