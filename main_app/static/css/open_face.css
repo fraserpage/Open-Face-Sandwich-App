@@ -270,15 +270,17 @@ div#gallery-user-mini-profile {
   display: block;
 }
 
-.gallery-grid {
+#gallery-grid {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 img.sandwich-gallery-thumbnail {
   max-width: 200px;
   min-width: 100px;
+  margin: 20px;
 }
 
 /*************** FORM ELEMENTS ***************/
