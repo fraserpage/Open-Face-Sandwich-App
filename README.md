@@ -9,7 +9,7 @@
 ```
 Have you ever noticed a stranger's nose and thought, "I want that. That's a sexy nose!"
 Have you ever seen your forehead in the mirror and thought, "Wow! (dramatic pause) That's big!"
-Have you ever looked at your lips and wished they were more plum and luscious?
+Have you ever looked at your lips and wished they were more plump and luscious?
 
 Well, here's the app for you!
 
