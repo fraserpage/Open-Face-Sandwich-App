@@ -23,16 +23,16 @@ Once you find the perfect face, share it on your profile and be amazed by how ma
 
 A non-user can:
 
-(1) Make a sandwich!
-(2) If you like the sandwich, signup, save the sandwich and enjoy the rest of our features!
-
-A user can: 
-
-(1) Upload photos.
-(2) Customize their profiles.
-(3) Create a sandwich using either their photos or any photos available in the database.
-(4) Display their sandwiches in the gallery.
-(5) Edit sandwiches or delete sandwiches.
+(1) Make a sandwich!<br>
+(2) If you like the sandwich, signup, save the sandwich and enjoy the rest of our features!<br>
+<br>
+A user can: <br>
+<br>
+(1) Upload photos.<br>
+(2) Customize their profiles.<br>
+(3) Create a sandwich using either their photos or any photos available in the database.<br>
+(4) Display their sandwiches in the gallery.<br>
+(5) Edit sandwiches or delete sandwiches.<br>
 
 
 
