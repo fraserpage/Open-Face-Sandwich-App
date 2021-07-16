@@ -50,6 +50,12 @@
   text-align: center;
 }
 
+.flex-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .font-main {
   font-family: var(--main-font-family);
 }
@@ -122,6 +128,7 @@ footer#site-footer {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1;
 }
 
 main {
@@ -274,13 +281,14 @@ div#gallery-user-mini-profile {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin: 0 -10px;
 }
 
 img.sandwich-gallery-thumbnail {
   max-width: 200px;
   min-width: 100px;
-  margin: 20px;
+  margin: 10px;
 }
 
 /*************** FORM ELEMENTS ***************/
@@ -428,7 +436,7 @@ nav#mobile-menua.nav-item:hover {
   }
 
   a#app-logo {
-    margin-left: 2vw;
+    margin-left: max(2vw, 45px);
   }
 
   a#app-logo img {
@@ -442,7 +450,7 @@ nav#mobile-menua.nav-item:hover {
     height: 100%;
     width: 80%;
     gap: 2rem;
-    margin-right: 2vw;
+    margin-right: max(2vw, 45px);
   }
 
   nav#mobile-menu {
