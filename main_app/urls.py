@@ -18,10 +18,9 @@ urlpatterns = [
 
     # sandwich workshop views
     path('sandwiches/new/', views.sandwich_new, name='sandwich_new'),
-    path('sandwiches/new/<int:photo_id>',
-         views.sandwich_from_photo, name='sandwich_from_photo'),
-    path('sandwiches/<int:sandwich_id>/<int:top_id>/<int:middle_id>/<int:bottom_id>/edit',
-         views.sandwich_edit, name="sandwich_edit"),
+    path('sandwiches/new/<int:photo_id>', views.sandwich_from_photo, name='sandwich_from_photo'),
+    path('sandwiches/<int:sandwich_id>/edit', views.sandwich_edit, name="sandwich_edit"),
+    path('sandwiches/<int:sandwich_id>/new_from', views.sandwich_new_from, name="sandwich_new_from"),
 
     # saving a sandwich
     path('sandwiches/<int:top_id>/<int:middle_id>/<int:bottom_id>/create/',
