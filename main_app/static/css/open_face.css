@@ -64,6 +64,11 @@
   float: left;
 }
 
+.clearfix {
+  clear: both;
+  float: none;
+}
+
 /*************** MOBILE-CENTRIC STYLES ***************/
 
 /*************** MAIN PAGE ELEMENTS ***************/

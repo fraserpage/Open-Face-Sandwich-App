@@ -21,9 +21,10 @@ def index(request):
     kir = User.objects.get(id=2)
     david = User.objects.get(id=3)
     fraser = User.objects.get(id=4)
-    featured1 = Sandwich.objects.get(id=17)
-    featured2 = Sandwich.objects.get(id=32)
-    featured3 = Sandwich.objects.get(id=2)
+    featured1 = Sandwich.objects.get(id=5)
+    featured2 = Sandwich.objects.get(id=20)
+    featured3 = Sandwich.objects.get(id=37)
+    featured4 = Sandwich.objects.get(id=3)
     return render(request, 'index.html', {
         'martin': martin, 
         'kir': kir, 
@@ -32,6 +33,7 @@ def index(request):
         'featured1': featured1,
         'featured2': featured2,
         'featured3': featured3,
+        'featured4': featured4,
         })
 
 def index_redirect(request):
