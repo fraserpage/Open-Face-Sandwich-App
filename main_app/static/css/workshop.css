@@ -17,7 +17,7 @@ img{
   height: 19em;
   perspective: 50em;
   width: 100%;
-  margin: -2em auto -1em;
+  margin: -2em auto -0.5em;
 }
 .cubes {
   transform: rotateX(-4deg);
@@ -106,4 +106,8 @@ img{
 }
 .arrs:nth-child(3){
   top: 14em;
+}
+form {
+  position: relative;
+  z-index: 1;
 }

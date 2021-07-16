@@ -13,8 +13,9 @@
     <br><br>
     {% if user.id == sandwich.user.id %}
     <a class="button" href="/sandwiches/{{ sandwich_id }}/profile_photo/">Set As Profile Photo</a>
-    <a class="button" href="/sandwiches/{{ sandwich_id }}/{{ top_id }}/{{ middle_id }}/{{ bottom_id }}/edit">Edit</a>
+    <a class="button" href="/sandwiches/{{ sandwich_id }}/edit">Edit</a>
     <a class="button" href="/sandwiches/{{ sandwich_id }}/delete">Delete</a>
   {% endif %}
+    <a href="{% url 'sandwich_new_from' sandwich_id %}" class="button">New based on this</a>
 </article>
 {% endblock %}

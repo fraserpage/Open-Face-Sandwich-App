@@ -1,26 +1,35 @@
-# import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-# from django.db import models
 from django.urls import reverse
-from django.http import JsonResponse, request
+from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
-from django.core import serializers
 from django.db.models import Q
-# from datetime import date
 from .models import *
 import uuid
 import boto3
-# import datetime
 from PIL import Image
 import io
-# import cv2
-# import numpy as np
-import random
 import urllib.request
-import os
+
+
+# Static pages
+# -------------
+def index(request):
+    return render(request, 'index.html')
+
+
+def index_redirect(request):
+    return redirect('/')
+
+
+def about(request):
+    return render(request, 'about.html')
+
+
+# Photo pages
+# -------------
 
 # Amazon S3 settings
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
@@ -70,8 +79,8 @@ def photo_save(request):
             'error': 'There was an error saving the photo'
         })
 
-# photo saving helper functions
 
+# photo saving helper functions
 
 def save_to_s3(image_file, orig_img):
     s3 = boto3.client('s3')
@@ -100,17 +109,8 @@ def photo_detail(request, id):
     return render(request, 'photo/detail.html', {'photo': photo})
 
 
-def index(request):
-    return render(request, 'index.html')
-
-
-def index_redirect(request):
-    return redirect('/')
-
-
-def about(request):
-    return render(request, 'about.html')
-
+# Sandwich pages
+# -------------
 
 def sandwich_index(request):
     # get all sandwiches
@@ -118,12 +118,15 @@ def sandwich_index(request):
     sandwiches = Sandwich.objects.all()
     return render(request, 'sandwich/gallery.html', {'sandwiches': sandwiches, 'gallery_title': 'Sandwich Gallery', 'gallery_type': 'public'})
 
+# Helper function to get all photos
 def photos_for_workshop(request):
     return Photo.objects.filter(Q(user_id=request.user.id) | Q(is_public=True))
+
 
 def sandwich_new(request):
     photos = photos_for_workshop(request)
     return render(request, 'sandwich/workshop.html', { 'photos':photos })
+
 
 def sandwich_from_photo(request, photo_id):
     photos = photos_for_workshop(request)
@@ -133,7 +136,8 @@ def sandwich_from_photo(request, photo_id):
         'from_photo': photo
     })
 
-def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
+
+def sandwich_edit(request, sandwich_id):
     sandwich = Sandwich.objects.get(id=sandwich_id)
     if (sandwich.user_id == request.user.id):
         photos = photos_for_workshop(request)
@@ -145,6 +149,16 @@ def sandwich_edit(request, sandwich_id, top_id, middle_id, bottom_id):
         raise PermissionDenied
 
 
+def sandwich_new_from(request, sandwich_id):
+    sandwich = Sandwich.objects.get(id=sandwich_id)
+    photos = photos_for_workshop(request)
+    return render(request, 'sandwich/workshop.html', {
+        'photos':photos,
+        'from_sandwich':sandwich
+    })
+
+
+# Build thumbnail image from slices
 def get_concat_v(im1, im2, im3):
     dst = Image.new('RGB', (im1.width,
                     im1.height + im2.height + im3.height))
@@ -171,6 +185,7 @@ def save_sandwich_thumbnail(sandwich_id):
     try:
         s3.upload_fileobj(sandwich_thumbnail, BUCKET, key)
         url = f'{S3_BASE_URL}{BUCKET}/{key}'
+        print('url',url)
         return url
     except:
         print('An error occurred uploading file to S3')
@@ -224,8 +239,13 @@ def sandwich_update(request, sandwich_id, top_id, middle_id, bottom_id):
     sandwich.middle_id = middle_id
     sandwich.bottom_id = bottom_id
     sandwich.save()
+    sandwich.thumbnail = save_sandwich_thumbnail(sandwich_id)
+    sandwich.save()
     return redirect(f'/sandwiches/{sandwich_id}')
 
+
+# User profiles
+# --------------
 
 def user_profile(request, user_id):
     profile_user = User.objects.get(id=user_id)
@@ -338,8 +358,8 @@ def photo_delete(request, user_id, photo_id):
     Photo.objects.filter(id=photo_id).delete()
     return redirect(f'/users/{user_id}/photos/')
 
-### USER SIGNUP ###
 
+### USER SIGNUP ###
 
 def signup(request):
     error_message = ''

@@ -1,7 +1,8 @@
 // Cached elem references
 // ----------------------
-let main = document.querySelector('main')
+let main = document.getElementById('image-cropper')
 let imageInput = document.getElementById('croppieInput')
+let imageInputLabel = document.getElementById('croppieInputLabel')
 let statusElem = document.getElementById('status')
 let croppieContainer = document.getElementById('croppie-container')
 let croppieActionsElem = document.getElementById('croppie-actions')
@@ -20,6 +21,7 @@ croppieRotateBtns.forEach( el => el.addEventListener('click', rotateCroppie) )
 // Functions
 // ---------
 function setupCroppie(event) {
+    imageInputLabel.classList.add('hidden')
     // If Croppie already exists destroy it before re-initializing
     if (croppieInst instanceof Croppie) croppieInst.destroy()
     
