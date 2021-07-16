@@ -138,6 +138,7 @@
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: transparent;
+    margin: 0 auto;
 }
 
 .cr-slider::-webkit-slider-runnable-track {
