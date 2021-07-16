@@ -28,8 +28,8 @@ A non-user can:
 
 A user can: 
 
-(1) A user can upload photos.
-(2) Customize their profiles
+(1) Upload photos.
+(2) Customize their profiles.
 (3) Create a sandwich using either their photos or any photos available in the database.
 (4) Display their sandwiches in the gallery.
 (5) Edit sandwiches or delete sandwiches.
