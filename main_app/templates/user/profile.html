@@ -4,8 +4,8 @@
 
 {% block content %}
 <article>
-{% if profile_user.img_src %}
-    <img id="user-profile-img" src="{{ profile_user.img_src }}" alt="{{ profile_user.username }}'s profile image">
+{% if profile_user.profile.img_src %}
+    <img id="user-profile-img" src="{{ profile_user.profile.img_src }}" alt="{{ profile_user.username }}'s profile image">
 {% else %}
     <img id="user-profile-img" src="{% static 'images/profile-placeholder.png' %}" alt="{{ profile_user.username }}'s profile image">
 {% endif %}
@@ -19,8 +19,8 @@
 {% endif %}
 <h3>About {{ profile_user.username }}</h3>
 <div id="user-bio">
-    {% if profile_user.bio and profile_user.bio != '' %}
-    {{ profile_user.bio|linebreaks }}
+    {% if profile_user.profile.bio and profile_user.profile.bio != '' %}
+    {{ profile_user.profile.bio|linebreaks }}
     {% else %}
         <p>{{ profile_user.username }} hasn't written anything...yet.</p>
     {% endif %}

@@ -3,19 +3,18 @@
 {% block page_title %}Sandwich {{ sandwich.id }}: Detail{% endblock %}
 
 {% block content %}
-<article>
+<article class="text-align-center">
   <h1 class="page-headline">Sandwich {{ sandwich.id }}: Detail</h1>
-  <div>
-    <img src="{{ sandwich.thumbnail }}">
+  <div class="text-align-center">
+    <h2>Creator: <a href="/users/{{ user_id }}">{{sandwich.user}}</a></h2>
+    <img id="sandwich-detail-thumbnail" src="{{ sandwich.thumbnail }}"><br>   
   </div>
-    <br><br>
-    Creator: <a href="/users/{{ sandwich.user.id }}">{{sandwich.user}}</a>
-    <br><br>
+
     {% if user.id == sandwich.user.id %}
     <a class="button" href="/sandwiches/{{ sandwich_id }}/profile_photo/">Set As Profile Photo</a>
     <a class="button" href="/sandwiches/{{ sandwich_id }}/edit">Edit</a>
     <a class="button" href="/sandwiches/{{ sandwich_id }}/delete">Delete</a>
   {% endif %}
-    <a href="{% url 'sandwich_new_from' sandwich_id %}" class="button">New based on this</a>
+  <a href="{% url 'sandwich_new_from' sandwich_id %}" class="button">New based on this</a>
 </article>
 {% endblock %}

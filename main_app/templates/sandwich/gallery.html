@@ -10,8 +10,8 @@
         <div id="gallery-user-mini-profile">
             <h3>Sandwiches Made By</h3>
             <a href="/users/{{ profile_user.id }}">
-            {% if profile_user.img_src %}
-                <img id="user-gallery-profile-image" src="{{ profile_user.img_src }}" alt="{{ profile_user.username }}'s profile image">
+            {% if profile_user.profile.img_src %}
+                <img id="user-gallery-profile-image" src="{{ profile_user.profile.img_src }}" alt="{{ profile_user.username }}'s profile image">
             {% else %}
                 <img id="user-gallery-profile-image" src="{% static 'images/profile-placeholder.png' %}" alt="{{ profile_user.username }}'s profile image">
             {% endif %}
